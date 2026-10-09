@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>English Adventure — BR/CR, Numbers & Colours</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#18233d;--muted:#68728a;--blue:#4f6df5;--purple:#7839db;--pink:#f33d89;--cyan:#27c2df;--yellow:#ffd34e;--green:#23c889;--orange:#ff8a34;--card:#fff;--bg:#11162f;--r:24px}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{min-height:100vh;background:radial-gradient(circle at 15% 15%,#29316b 0,transparent 30%),radial-gradient(circle at 90% 80%,#50205b 0,transparent 32%),var(--bg);color:var(--ink);font-family:Nunito,sans-serif;display:flex;flex-direction:column}
+    button,input,select{font:inherit}
+    button{cursor:pointer}
+    header{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 22px;background:#10152de8;border-bottom:1px solid #ffffff1d;backdrop-filter:blur(16px);color:#fff}
+    .brand{display:flex;align-items:center;gap:10px;font-family:Fredoka;font-size:20px;font-weight:700}.logo{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--cyan),var(--purple));box-shadow:0 6px 18px #27c2df55}.badge{font:800 10px Nunito;padding:3px 7px;border-radius:20px;background:#ffd34e22;color:var(--yellow)}
+    .hub{display:flex;align-items:center;gap:9px}.timer,.score{display:flex;align-items:center;gap:7px;padding:7px 12px;border-radius:99px;background:#ffffff12;border:1px solid #ffffff1d;font-family:Fredoka;font-weight:700}.score{color:var(--yellow)}.icon-btn{border:0;color:#fff;background:#ffffff18;border-radius:50%;width:27px;height:27px}
+    .progress{height:4px;background:#ffffff14}.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--pink),var(--yellow));transition:.35s}
+    main{width:min(1060px,100%);margin:auto;padding:22px 18px;display:flex;align-items:center;flex:1}
+    .slide{display:none;width:100%;animation:in .35s ease}.slide.active{display:block}@keyframes in{from{opacity:0;transform:translateY(12px)}}
+    .card{background:#f9fbff;border:1px solid #ffffff88;border-radius:var(--r);box-shadow:0 25px 65px #0006;padding:30px;overflow:hidden;position:relative}
+    .card:before{content:"";position:absolute;width:240px;height:240px;border-radius:50%;background:#6a78ff0b;right:-80px;top:-100px}
+    .slide-head{position:relative;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;border-bottom:2px dashed #dfe4ef;padding-bottom:15px;margin-bottom:22px}.tag{display:inline-block;padding:5px 11px;border-radius:99px;background:#e8edff;color:#4258c9;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px}.slide h2{font:700 clamp(24px,4vw,33px) Fredoka;margin-top:5px}.sub{color:var(--muted);margin-top:4px}.speak{border:1px solid #afe4f4;background:#e5f8fd;color:#087c9e;padding:8px 13px;border-radius:99px;font-weight:800}
+    .hero{text-align:center;padding:38px 20px}.hero-art{font-size:76px}.hero h1{font:700 clamp(38px,7vw,65px) Fredoka;background:linear-gradient(90deg,var(--cyan),var(--purple),var(--pink));color:transparent;background-clip:text}.hero p{max-width:680px;margin:12px auto 25px;color:var(--muted);font-size:18px}.start{border:0;color:#fff;background:linear-gradient(135deg,var(--blue),var(--purple));padding:14px 25px;border-radius:99px;font-weight:800;box-shadow:0 8px 20px #6048df55}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}.tile{background:#fff;border:2px solid #e8ebf4;border-radius:18px;padding:18px;text-align:center;transition:.2s}.tile:hover{transform:translateY(-3px);border-color:#9caafc}.emoji{font-size:54px;line-height:1.2}.word{font:700 25px Fredoka;margin-top:7px}.blend{color:var(--pink)}
+    .formula{display:flex;align-items:center;justify-content:center;gap:15px;flex-wrap:wrap;margin:22px}.letter{display:grid;place-items:center;min-width:74px;height:74px;border-radius:15px;background:#fff;box-shadow:0 6px 20px #27335b19;font:700 42px Fredoka;color:var(--pink)}.plus{font:700 30px Fredoka}.result{color:var(--purple)}
+    .question{background:#fff;border:2px solid #e6eaf4;border-radius:17px;padding:15px;margin:11px 0}.q-title{font-weight:800;margin-bottom:10px}.options{display:flex;gap:8px;flex-wrap:wrap}.option{border:2px solid #dce2ef;background:#fff;border-radius:12px;padding:9px 14px;font-weight:800;color:var(--ink)}.option.selected{border-color:var(--blue);background:#edf0ff}.option.correct{border-color:var(--green);background:#e9fff6}.option.wrong{border-color:#ef476f;background:#fff0f3}
+    .check{border:0;color:#fff;background:linear-gradient(135deg,var(--green),#079c75);padding:11px 20px;border-radius:99px;font-weight:800;margin-top:14px}.feedback{display:none;margin-top:12px;border-radius:13px;padding:11px 15px;font-weight:800}.feedback.show{display:block}.feedback.ok{background:#e7fff5;color:#087a59}.feedback.no{background:#fff0f3;color:#be2348}
+    .write-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}.write-row{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid #e7eaf3;border-radius:15px;padding:11px}.write-row span{font-weight:800;flex:1}.text-input{width:135px;max-width:50%;padding:9px 11px;border:2px solid #dce2ef;border-radius:10px;outline:none}.text-input:focus{border-color:var(--blue)}.text-input.correct{border-color:var(--green);background:#effff9}.text-input.wrong{border-color:#ef476f;background:#fff4f6}
+    .number-board{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}.num{padding:10px 5px;border-radius:12px;background:#fff;text-align:center;border:2px solid #e6eaf4;font-weight:800}.num b{display:block;color:var(--blue);font:700 22px Fredoka}
+    .duo{display:grid;grid-template-columns:1fr 1fr;gap:18px}.character{background:linear-gradient(145deg,#eafcff,#f2ebff);border-radius:20px;padding:20px;text-align:center}.character .emoji{font-size:82px}.character p{color:var(--muted);line-height:1.55}
+    .colour-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:11px}.colour{border:3px solid #fff;box-shadow:0 3px 12px #1b25451b;border-radius:15px;padding:18px 5px;text-align:center;font-weight:900}.dark{color:#fff}
+    .scene{background:linear-gradient(#83ddf4 0 45%,#68cf69 45% 82%,#ddd 82%);border-radius:20px;padding:20px;display:flex;justify-content:center;gap:18px;flex-wrap:wrap;font-size:55px}.scene span{filter:drop-shadow(0 5px 3px #0002)}
+    footer{position:sticky;bottom:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 22px;background:#10152de8;border-top:1px solid #ffffff1d;backdrop-filter:blur(16px)}.nav{border:0;border-radius:99px;padding:11px 20px;color:#fff;background:linear-gradient(135deg,var(--blue),var(--purple));font-weight:800}.nav:disabled{opacity:.35}.counter{color:#abb5d2;font-weight:800;text-align:center}.dots{display:flex;gap:5px;justify-content:center;margin-bottom:3px}.dot{width:7px;height:7px;background:#58617d;border-radius:50%}.dot.active{width:20px;border-radius:9px;background:var(--cyan)}
+    @media(max-width:650px){header{padding:8px 12px}.brand span:not(.logo){display:none}.card{padding:20px 15px}.hub{gap:5px}.score,.timer{padding:6px 8px}.duo{grid-template-columns:1fr}.number-board{grid-template-columns:repeat(2,1fr)}footer{padding:9px 12px}.nav{padding:10px 14px}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand"><span class="logo">🚀</span><span>English Adventure</span><small class="badge">Unit 1</small></div>
+    <div class="hub">
+      <div class="timer">⏱ <span id="time">60:00</span><button class="icon-btn" id="timerBtn" onclick="toggleTimer()">▶</button></div>
+      <div class="score">⭐ <span id="score">0</span></div>
+    </div>
+  </header>
+  <div class="progress"><div id="progress"></div></div>
+  <main>
+    <section class="slide active"><div class="card hero">
+      <div class="hero-art">🧹 🦀 🔢 🎨</div>
+      <h1>Super English Quest!</h1>
+      <p>Practise the sounds <b>BR</b> and <b>CR</b>, meet Dug and Kit, count from 1 to 100 and learn the colours.</p>
+      <button class="start" onclick="go(1)">Start the adventure →</button>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <div class="slide-head"><div><span class="tag">Phonics • A–B</span><h2>Listen and learn: BR / CR</h2><p class="sub">Put two sounds together, then read the word.</p></div><button class="speak" onclick="say('B, R, br. Broom. C, R, cr. Crab.')">🔊 Listen</button></div>
+      <div class="formula"><span class="letter">b</span><span class="plus">+</span><span class="letter">r</span><span class="plus">=</span><span class="letter result">br</span></div>
+      <div class="formula"><span class="letter">c</span><span class="plus">+</span><span class="letter">r</span><span class="plus">=</span><span class="letter result">cr</span></div>
+      <div class="grid">
+        <button class="tile" onclick="say('broom')"><div class="emoji">🧹</div><div class="word"><span class="blend">br</span>oom</div></button>
+        <button class="tile" onclick="say('bride')"><div class="emoji">👰</div><div class="word"><span class="blend">br</span>ide</div></button>
+        <button class="tile" onclick="say('crab')"><div class="emoji">🦀</div><div class="word"><span class="blend">cr</span>ab</div></button>
+        <button class="tile" onclick="say('crocodile')"><div class="emoji">🐊</div><div class="word"><span class="blend">cr</span>ocodile</div></button>
+      </div>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <div class="slide-head"><div><span class="tag">Phonics • C</span><h2>Which ones have the same sound?</h2><p class="sub">Choose the two words with the same beginning sound.</p></div></div>
+      <div id="soundQuiz">
+        <div class="question" data-answer="crocodile,crab"><div class="q-title">1. Choose two:</div><div class="options"><button class="option" data-v="crocodile">🐊 crocodile</button><button class="option" data-v="house">🏠 house</button><button class="option" data-v="crab">🦀 crab</button></div></div>
+        <div class="question" data-answer="broom,brown"><div class="q-title">2. Choose two:</div><div class="options"><button class="option" data-v="broom">🧹 broom</button><button class="option" data-v="black">⚫ black</button><button class="option" data-v="brown">🟤 brown</button></div></div>
+        <div class="question" data-answer="broom,bride"><div class="q-title">3. Choose two:</div><div class="options"><button class="option" data-v="clock">⏰ clock</button><button class="option" data-v="broom">🧹 broom</button><button class="option" data-v="bride">👰 bride</button></div></div>
+      </div>
+      <button class="check" onclick="checkMulti('soundQuiz','soundFb',10)">Check answers</button><div class="feedback" id="soundFb"></div>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <div class="slide-head"><div><span class="tag">Phonics • D</span><h2>Make and write the words</h2><p class="sub">Join the beginning and ending.</p></div><button class="speak" onclick="say('crab, broom, blanket, crocodile, clock, bride')">🔊 Listen</button></div>
+      <div class="write-grid" id="blendWrite">
+        <label class="write-row"><span>1. cr + ab</span><input class="text-input" data-answer="crab"></label>
+        <label class="write-row"><span>2. br + oom</span><input class="text-input" data-answer="broom"></label>
+        <label class="write-row"><span>3. bl + anket</span><input class="text-input" data-answer="blanket"></label>
+        <label class="write-row"><span>4. cr + ocodile</span><input class="text-input" data-answer="crocodile"></label>
+        <label class="write-row"><span>5. cl + ock</span><input class="text-input" data-answer="clock"></label>
+        <label class="write-row"><span>6. br + ide</span><input class="text-input" data-answer="bride"></label>
+      </div>
+      <button class="check" onclick="checkInputs('blendWrite','blendFb',12)">Check words</button><div class="feedback" id="blendFb"></div>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <div class="slide-head"><div><span class="tag">Chant • E</span><h2>Listen, chant and read!</h2></div><button class="speak" onclick="say('The bride wants a broom, a crab, and a crocodile.',.75)">🔊 Chant</button></div>
+      <div style="text-align:center;padding:30px 10px">
+        <div style="font-size:75px">👰 🧹 🦀 🐊</div>
+        <p style="font:700 clamp(27px,5vw,44px) Fredoka;line-height:1.5;margin-top:18px">The <span class="blend">bride</span> wants a <span class="blend">broom</span>,<br>a <span class="blend">crab</span>, and a <span class="blend">crocodile</span>.</p>
+      </div>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <div class="slide-head"><div><span class="tag">Meet Dug and Kit</span><h2>Read about the friends</h2><p class="sub">Dug has a secret superhero identity!</p></div><button class="speak" onclick="say('This is Dug. Dug is also Superdug. Superdug is a superhero. This is Kit. Kit is very clever. She is Dug’s best friend.')">🔊 Listen</button></div>
+      <div class="duo">
+        <div class="character"><div class="emoji">🐶🦸</div><h2>Dug</h2><p>This is Dug. Dug is also <b>Superdug</b>.<br>Superdug is a superhero.</p></div>
+        <div class="character"><div class="emoji">🐱🎀</div><h2>Kit</h2><p>This is Kit. Kit is very clever.<br>She is Dug’s best friend.</p></div>
+      </div>
+      <div class="question" data-answer="Dug" id="dugQuiz"><div class="q-title">Who is a superhero?</div><div class="options"><button class="option" data-v="Dug">Dug</button><button class="option" data-v="Kit">Kit</button></div></div>
+      <button class="check" onclick="checkSingle('dugQuiz','dugFb',5)">Check</button><div class="feedback" id="dugFb"></div>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <div class="slide-head"><div><span class="tag">Numbers 1–20</span><h2>Listen and repeat</h2><p class="sub">Click any number to hear it.</p></div></div>
+      <div class="number-board" id="numbers"></div>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <div class="slide-head"><div><span class="tag">Numbers • Exercise 3</span><h2>Complete the numbers</h2><p class="sub">Write the missing word.</p></div></div>
+      <div class="write-grid" id="numberWrite">
+        <label class="write-row"><span>1. o _ e</span><input class="text-input" data-answer="one"></label>
+        <label class="write-row"><span>2. _ w _</span><input class="text-input" data-answer="two"></label>
+        <label class="write-row"><span>3. t _ r _ _</span><input class="text-input" data-answer="three"></label>
+        <label class="write-row"><span>4. _ o _ r</span><input class="text-input" data-answer="four"></label>
+        <label class="write-row"><span>5. f _ _ e</span><input class="text-input" data-answer="five"></label>
+        <label class="write-row"><span>6. _ i _</span><input class="text-input" data-answer="six"></label>
+        <label class="write-row"><span>7. _ e _ e _</span><input class="text-input" data-answer="seven"></label>
+        <label class="write-row"><span>8. e i _ _ t</span><input class="text-input" data-answer="eight"></label>
+        <label class="write-row"><span>9. _ i n _</span><input class="text-input" data-answer="nine"></label>
+        <label class="write-row"><span>10. t _ _</span><input class="text-input" data-answer="ten"></label>
+      </div>
+      <button class="check" onclick="checkInputs('numberWrite','numberFb',15)">Check numbers</button><div class="feedback" id="numberFb"></div>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <div class="slide-head"><div><span class="tag">Maths in English</span><h2>Write the answers in words</h2></div></div>
+      <div class="write-grid" id="mathWrite">
+        <label class="write-row"><span>1. six + six =</span><input class="text-input" data-answer="twelve"></label>
+        <label class="write-row"><span>2. eighteen − three =</span><input class="text-input" data-answer="fifteen"></label>
+        <label class="write-row"><span>3. two + eleven =</span><input class="text-input" data-answer="thirteen"></label>
+        <label class="write-row"><span>4. twenty − nine =</span><input class="text-input" data-answer="eleven"></label>
+        <label class="write-row"><span>5. seventeen − three =</span><input class="text-input" data-answer="fourteen"></label>
+        <label class="write-row"><span>6. two + seven =</span><input class="text-input" data-answer="nine"></label>
+        <label class="write-row"><span>7. five + two =</span><input class="text-input" data-answer="seven"></label>
+        <label class="write-row"><span>8. sixteen − twelve =</span><input class="text-input" data-answer="four"></label>
+      </div>
+      <button class="check" onclick="checkInputs('mathWrite','mathFb',15)">Check maths</button><div class="feedback" id="mathFb"></div>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <div class="slide-head"><div><span class="tag">Numbers 10–100</span><h2>Circle the correct number</h2></div><button class="speak" onclick="say('ten, twenty, thirty, forty, fifty, sixty, seventy, eighty, ninety, one hundred')">🔊 Repeat</button></div>
+      <div id="tensQuiz">
+        <div class="question" data-answer="40"><div class="q-title">1. forty</div><div class="options"><button class="option" data-v="14">14</button><button class="option" data-v="40">40</button></div></div>
+        <div class="question" data-answer="15"><div class="q-title">2. fifteen</div><div class="options"><button class="option" data-v="15">15</button><button class="option" data-v="50">50</button></div></div>
+        <div class="question" data-answer="13"><div class="q-title">3. thirteen</div><div class="options"><button class="option" data-v="13">13</button><button class="option" data-v="30">30</button></div></div>
+        <div class="question" data-answer="80"><div class="q-title">4. eighty</div><div class="options"><button class="option" data-v="18">18</button><button class="option" data-v="80">80</button></div></div>
+        <div class="question" data-answer="20"><div class="q-title">5. twenty</div><div class="options"><button class="option" data-v="12">12</button><button class="option" data-v="20">20</button></div></div>
+        <div class="question" data-answer="16"><div class="q-title">6. sixteen</div><div class="options"><button class="option" data-v="16">16</button><button class="option" data-v="60">60</button></div></div>
+      </div>
+      <button class="check" onclick="checkSingles('tensQuiz','tensFb',12)">Check numbers</button><div class="feedback" id="tensFb"></div>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <div class="slide-head"><div><span class="tag">Colours</span><h2>Listen and repeat</h2><p class="sub">Click a colour to hear its name.</p></div></div>
+      <div class="colour-grid">
+        <button class="colour dark" style="background:#161616" onclick="say('black')">black</button><button class="colour dark" style="background:#3178e8" onclick="say('blue')">blue</button>
+        <button class="colour dark" style="background:#8a532d" onclick="say('brown')">brown</button><button class="colour dark" style="background:#28a85c" onclick="say('green')">green</button>
+        <button class="colour" style="background:#bbb" onclick="say('grey')">grey</button><button class="colour dark" style="background:#f07822" onclick="say('orange')">orange</button>
+        <button class="colour" style="background:#ff8dba" onclick="say('pink')">pink</button><button class="colour dark" style="background:#8947b8" onclick="say('purple')">purple</button>
+        <button class="colour dark" style="background:#e53946" onclick="say('red')">red</button><button class="colour" style="background:#fff" onclick="say('white')">white</button>
+        <button class="colour" style="background:#ffe251" onclick="say('yellow')">yellow</button>
+      </div>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <div class="slide-head"><div><span class="tag">Colours • Exercise 11</span><h2>Look and match</h2><p class="sub">Choose the colour of each thing.</p></div></div>
+      <div class="scene"><span>🐘🐘</span><span>🌺🌺</span><span>🦓🦓</span><span>🍊🍊</span><span>🍋🍋</span><span>🦩🦩</span></div>
+      <div id="colourQuiz">
+        <div class="question" data-answer="grey"><div class="q-title">1. The elephants are ...</div><div class="options"><button class="option" data-v="grey">grey</button><button class="option" data-v="blue">blue</button><button class="option" data-v="pink">pink</button></div></div>
+        <div class="question" data-answer="red"><div class="q-title">2. The flowers are ...</div><div class="options"><button class="option" data-v="green">green</button><button class="option" data-v="red">red</button><button class="option" data-v="white">white</button></div></div>
+        <div class="question" data-answer="black and white"><div class="q-title">3. The zebras are ...</div><div class="options"><button class="option" data-v="black and white">black and white</button><button class="option" data-v="purple">purple</button></div></div>
+        <div class="question" data-answer="orange"><div class="q-title">4. The oranges are ...</div><div class="options"><button class="option" data-v="yellow">yellow</button><button class="option" data-v="orange">orange</button></div></div>
+        <div class="question" data-answer="yellow"><div class="q-title">5. The lemons are ...</div><div class="options"><button class="option" data-v="yellow">yellow</button><button class="option" data-v="pink">pink</button></div></div>
+        <div class="question" data-answer="pink"><div class="q-title">6. The flamingoes are ...</div><div class="options"><button class="option" data-v="red">red</button><button class="option" data-v="pink">pink</button></div></div>
+      </div>
+      <button class="check" onclick="checkSingles('colourQuiz','colourFb',15)">Check colours</button><div class="feedback" id="colourFb"></div>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <div class="slide-head"><div><span class="tag">Revision • Exercise 1</span><h2>Put the words in the correct order</h2><p class="sub">Make four sentences about Dug and Kit.</p></div><button class="speak" onclick="say('Dug is also Superdug. He is a superhero. Kit is Dug’s best friend. She is very clever.')">🔊 Listen</button></div>
+      <div class="write-grid" id="orderWrite">
+        <label class="write-row" style="display:block"><span>1. Superdug / also / Dug / is</span><input class="text-input" style="max-width:none;width:100%;margin-top:9px" data-answer="dug is also superdug"></label>
+        <label class="write-row" style="display:block"><span>2. is / superhero / He / a</span><input class="text-input" style="max-width:none;width:100%;margin-top:9px" data-answer="he is a superhero"></label>
+        <label class="write-row" style="display:block"><span>3. best / Kit / Dug’s / friend / is</span><input class="text-input" style="max-width:none;width:100%;margin-top:9px" data-answer="kit is dug’s best friend" data-alt="kit is dug's best friend"></label>
+        <label class="write-row" style="display:block"><span>4. clever / She / very / is</span><input class="text-input" style="max-width:none;width:100%;margin-top:9px" data-answer="she is very clever"></label>
+      </div>
+      <button class="check" onclick="checkInputs('orderWrite','orderFb',12)">Check sentences</button><div class="feedback" id="orderFb"></div>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <div class="slide-head"><div><span class="tag">Revision • Exercise 2</span><h2>Write the numbers</h2><p class="sub">Write each number using digits.</p></div></div>
+      <div class="write-grid" id="revisionNumbers">
+        <label class="write-row"><span>five</span><input class="text-input" inputmode="numeric" data-answer="5"></label>
+        <label class="write-row"><span>sixteen</span><input class="text-input" inputmode="numeric" data-answer="16"></label>
+        <label class="write-row"><span>twelve</span><input class="text-input" inputmode="numeric" data-answer="12"></label>
+        <label class="write-row"><span>one</span><input class="text-input" inputmode="numeric" data-answer="1"></label>
+        <label class="write-row"><span>ten</span><input class="text-input" inputmode="numeric" data-answer="10"></label>
+        <label class="write-row"><span>eight</span><input class="text-input" inputmode="numeric" data-answer="8"></label>
+        <label class="write-row"><span>four</span><input class="text-input" inputmode="numeric" data-answer="4"></label>
+        <label class="write-row"><span>eleven</span><input class="text-input" inputmode="numeric" data-answer="11"></label>
+        <label class="write-row"><span>seventeen</span><input class="text-input" inputmode="numeric" data-answer="17"></label>
+        <label class="write-row"><span>six</span><input class="text-input" inputmode="numeric" data-answer="6"></label>
+        <label class="write-row"><span>three</span><input class="text-input" inputmode="numeric" data-answer="3"></label>
+        <label class="write-row"><span>twenty</span><input class="text-input" inputmode="numeric" data-answer="20"></label>
+        <label class="write-row"><span>fourteen</span><input class="text-input" inputmode="numeric" data-answer="14"></label>
+        <label class="write-row"><span>eighteen</span><input class="text-input" inputmode="numeric" data-answer="18"></label>
+        <label class="write-row"><span>seven</span><input class="text-input" inputmode="numeric" data-answer="7"></label>
+        <label class="write-row"><span>nineteen</span><input class="text-input" inputmode="numeric" data-answer="19"></label>
+        <label class="write-row"><span>nine</span><input class="text-input" inputmode="numeric" data-answer="9"></label>
+        <label class="write-row"><span>thirteen</span><input class="text-input" inputmode="numeric" data-answer="13"></label>
+        <label class="write-row"><span>two</span><input class="text-input" inputmode="numeric" data-answer="2"></label>
+        <label class="write-row"><span>fifteen</span><input class="text-input" inputmode="numeric" data-answer="15"></label>
+      </div>
+      <button class="check" onclick="checkInputs('revisionNumbers','revisionNumbersFb',20)">Check numbers</button><div class="feedback" id="revisionNumbersFb"></div>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <div class="slide-head"><div><span class="tag">Revision • Exercise 3</span><h2>Complete the missing numbers</h2><p class="sub">Continue each sequence.</p></div></div>
+      <div class="question"><div class="q-title">Even numbers</div><div class="write-grid" id="evenSequence">
+        <label class="write-row"><span>two, four, ...</span><input class="text-input" data-answer="six"></label>
+        <label class="write-row"><span>eight, ten, ...</span><input class="text-input" data-answer="twelve"></label>
+        <label class="write-row"><span>fourteen, ...</span><input class="text-input" data-answer="sixteen"></label>
+        <label class="write-row"><span>eighteen, ...</span><input class="text-input" data-answer="twenty"></label>
+      </div></div>
+      <div class="question"><div class="q-title">Odd numbers</div><div class="write-grid" id="oddSequence">
+        <label class="write-row"><span>one, three, ...</span><input class="text-input" data-answer="five"></label>
+        <label class="write-row"><span>seven, ...</span><input class="text-input" data-answer="nine"></label>
+        <label class="write-row"><span>eleven, ...</span><input class="text-input" data-answer="thirteen"></label>
+        <label class="write-row"><span>fifteen, ...</span><input class="text-input" data-answer="seventeen"></label>
+      </div></div>
+      <button class="check" onclick="checkTwoGroups()">Check sequences</button><div class="feedback" id="sequenceFb"></div>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <div class="slide-head"><div><span class="tag">Revision • Exercise 4</span><h2>Write the numbers</h2><p class="sub">Read the number words and write the digits.</p></div></div>
+      <div class="write-grid" id="bigNumbers">
+        <label class="write-row"><span>1. fifty-seven</span><input class="text-input" inputmode="numeric" data-answer="57"></label>
+        <label class="write-row"><span>2. twenty-three</span><input class="text-input" inputmode="numeric" data-answer="23"></label>
+        <label class="write-row"><span>3. seventy-one</span><input class="text-input" inputmode="numeric" data-answer="71"></label>
+        <label class="write-row"><span>4. thirteen</span><input class="text-input" inputmode="numeric" data-answer="13"></label>
+        <label class="write-row"><span>5. sixty-eight</span><input class="text-input" inputmode="numeric" data-answer="68"></label>
+        <label class="write-row"><span>6. nineteen</span><input class="text-input" inputmode="numeric" data-answer="19"></label>
+        <label class="write-row"><span>7. thirty</span><input class="text-input" inputmode="numeric" data-answer="30"></label>
+        <label class="write-row"><span>8. eighty-six</span><input class="text-input" inputmode="numeric" data-answer="86"></label>
+        <label class="write-row"><span>9. forty-two</span><input class="text-input" inputmode="numeric" data-answer="42"></label>
+        <label class="write-row"><span>10. a hundred</span><input class="text-input" inputmode="numeric" data-answer="100"></label>
+      </div>
+      <button class="check" onclick="checkInputs('bigNumbers','bigNumbersFb',15)">Check numbers</button><div class="feedback" id="bigNumbersFb"></div>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <div class="slide-head"><div><span class="tag">Revision • Exercise 5</span><h2>Match the colours to the words</h2><p class="sub">Choose the English name for every colour.</p></div></div>
+      <div class="write-grid" id="colourMatch">
+        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#168fd5"></i><span>1</span><select class="text-input" data-answer="blue"><option></option><option>blue</option><option>green</option><option>grey</option></select></label>
+        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#202124"></i><span>2</span><select class="text-input" data-answer="black"><option></option><option>black</option><option>brown</option><option>purple</option></select></label>
+        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#ffbd20"></i><span>3</span><select class="text-input" data-answer="yellow"><option></option><option>yellow</option><option>orange</option><option>red</option></select></label>
+        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#fff;border:1px solid #bbb"></i><span>4</span><select class="text-input" data-answer="white"><option></option><option>white</option><option>grey</option><option>pink</option></select></label>
+        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#f51f68"></i><span>5</span><select class="text-input" data-answer="pink"><option></option><option>red</option><option>pink</option><option>purple</option></select></label>
+        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#a31f73"></i><span>6</span><select class="text-input" data-answer="purple"><option></option><option>purple</option><option>pink</option><option>brown</option></select></label>
+        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#58bd00"></i><span>7</span><select class="text-input" data-answer="green"><option></option><option>green</option><option>blue</option><option>yellow</option></select></label>
+        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#a95722"></i><span>8</span><select class="text-input" data-answer="brown"><option></option><option>brown</option><option>orange</option><option>black</option></select></label>
+        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#777"></i><span>9</span><select class="text-input" data-answer="grey"><option></option><option>white</option><option>grey</option><option>black</option></select></label>
+        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#ff641f"></i><span>10</span><select class="text-input" data-answer="orange"><option></option><option>orange</option><option>red</option><option>yellow</option></select></label>
+        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#f12626"></i><span>11</span><select class="text-input" data-answer="red"><option></option><option>red</option><option>orange</option><option>pink</option></select></label>
+      </div>
+      <button class="check" onclick="checkInputs('colourMatch','colourMatchFb',18)">Check colours</button><div class="feedback" id="colourMatchFb"></div>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <div class="slide-head"><div><span class="tag">Revision • Exercise 6</span><h2>Look and write the colours</h2><p class="sub">Read each coloured number word, then write its colour.</p></div></div>
+      <div style="background:#fff;border:2px solid #e5e8f1;border-radius:18px;padding:18px;text-align:center;font:700 25px Fredoka;line-height:1.7;margin-bottom:16px">
+        <span style="color:#777">eighteen</span>　<span style="color:#965126">ninety</span>　<span style="color:#158bd1">thirty</span>　<span style="color:#191919">sixteen</span><br>
+        <span style="color:#ff691f">fourteen</span>　<span style="color:#e6af00">seventeen</span>　<span style="color:#bbb;text-shadow:0 0 1px #555">eighty</span><br>
+        <span style="color:#ef3180">nineteen</span>　<span style="color:#e32d35">thirteen</span>　<span style="color:#48b80b">fifty</span>
+      </div>
+      <div class="write-grid" id="readColours">
+        <label class="write-row"><span>1. 14</span><input class="text-input" data-answer="orange"></label>
+        <label class="write-row"><span>2. 30</span><input class="text-input" data-answer="blue"></label>
+        <label class="write-row"><span>3. 17</span><input class="text-input" data-answer="yellow"></label>
+        <label class="write-row"><span>4. 90</span><input class="text-input" data-answer="brown"></label>
+        <label class="write-row"><span>5. 13</span><input class="text-input" data-answer="red"></label>
+        <label class="write-row"><span>6. 18</span><input class="text-input" data-answer="grey" data-alt="gray"></label>
+        <label class="write-row"><span>7. 19</span><input class="text-input" data-answer="pink"></label>
+        <label class="write-row"><span>8. 16</span><input class="text-input" data-answer="black"></label>
+        <label class="write-row"><span>9. 80</span><input class="text-input" data-answer="white"></label>
+        <label class="write-row"><span>10. 50</span><input class="text-input" data-answer="green"></label>
+      </div>
+      <button class="check" onclick="checkInputs('readColours','readColoursFb',15)">Check colours</button><div class="feedback" id="readColoursFb"></div>
+    </div></section>
+
+    <section class="slide"><div class="card hero">
+      <div class="hero-art">🏆🌟🎉</div><h1>Mission complete!</h1>
+      <p>You practised phonics, reading, numbers, maths and colours. Fantastic work!</p>
+      <div style="font:700 34px Fredoka;color:var(--purple);margin:18px">Your score: <span id="finalScore">0</span> ⭐</div>
+      <button class="start" onclick="go(0)">Play again</button>
+    </div></section>
+  </main>
+  <footer>
+    <button class="nav" id="prev" onclick="go(current-1)">◀ Back</button>
+    <div class="counter"><div class="dots" id="dots"></div><span id="counter">1 / 13</span></div>
+    <button class="nav" id="next" onclick="go(current+1)">Next ▶</button>
+  </footer>
+  <script>
+    const slides=[...document.querySelectorAll('.slide')], words=['one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
+    let current=0,score=0,seconds=3600,timer=null,awarded=new Set();
+    const dots=document.getElementById('dots');
+    slides.forEach((_,i)=>{const d=document.createElement('i');d.className='dot';d.onclick=()=>go(i);dots.appendChild(d)});
+    document.getElementById('numbers').innerHTML=words.map((w,i)=>`<button class="num" onclick="say('${w}')"><b>${i+1}</b>${w}</button>`).join('');
+    document.querySelectorAll('.options').forEach(group=>group.addEventListener('click',e=>{const b=e.target.closest('.option');if(!b)return;const q=b.closest('.question');if(q.dataset.answer.includes(','))b.classList.toggle('selected');else{group.querySelectorAll('.option').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')}}));
+    function go(n){if(n<0||n>=slides.length)return;slides[current].classList.remove('active');current=n;slides[current].classList.add('active');document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===current));document.getElementById('counter').textContent=`${current+1} / ${slides.length}`;document.getElementById('progress').style.width=`${current/(slides.length-1)*100}%`;document.getElementById('prev').disabled=current===0;document.getElementById('next').disabled=current===slides.length-1;if(current===slides.length-1)document.getElementById('finalScore').textContent=score;window.scrollTo({top:0,behavior:'smooth'})}
+    function say(text,rate=.88){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-GB';u.rate=rate;const v=speechSynthesis.getVoices().find(x=>x.lang.startsWith('en'));if(v)u.voice=v;speechSynthesis.speak(u)}
+    function reward(key,points){if(!awarded.has(key)){awarded.add(key);score+=points;document.getElementById('score').textContent=score}}
+    function showFb(id,good,text){const f=document.getElementById(id);f.className=`feedback show ${good?'ok':'no'}`;f.textContent=text}
+    function checkSingle(id,fb,points){const q=document.getElementById(id),b=q.querySelector('.selected'),ok=b&&b.dataset.v===q.dataset.answer;q.querySelectorAll('.option').forEach(x=>x.classList.toggle(x.dataset.v===q.dataset.answer?'correct':'wrong',x===b||x.dataset.v===q.dataset.answer));showFb(fb,ok,ok?'Excellent! Correct answer! 🎉':'Try again and read the text carefully.');if(ok)reward(id,points)}
+    function checkSingles(id,fb,points){const qs=[...document.querySelectorAll(`#${id} .question`)];let good=0;qs.forEach(q=>{const b=q.querySelector('.selected'),ok=b&&b.dataset.v===q.dataset.answer;if(ok)good++;q.querySelectorAll('.option').forEach(x=>{x.classList.remove('correct','wrong');if(x.dataset.v===q.dataset.answer)x.classList.add('correct');else if(x===b)x.classList.add('wrong')})});showFb(fb,good===qs.length,`${good} of ${qs.length} correct${good===qs.length?' — brilliant! 🌟':'. Fix the highlighted answers.'}`);if(good===qs.length)reward(id,points)}
+    function checkMulti(id,fb,points){const qs=[...document.querySelectorAll(`#${id} .question`)];let good=0;qs.forEach(q=>{const ans=q.dataset.answer.split(',').sort().join(','),sel=[...q.querySelectorAll('.selected')].map(x=>x.dataset.v).sort().join(','),ok=ans===sel;if(ok)good++;q.querySelectorAll('.option').forEach(x=>{x.classList.remove('correct','wrong');if(q.dataset.answer.split(',').includes(x.dataset.v))x.classList.add('correct');else if(x.classList.contains('selected'))x.classList.add('wrong')})});showFb(fb,good===qs.length,`${good} of ${qs.length} correct${good===qs.length?' — all sounds match! 🎧':'. Listen to the first sounds again.'}`);if(good===qs.length)reward(id,points)}
+    function checkInputs(id,fb,points){const ins=[...document.querySelectorAll(`#${id} input, #${id} select`)];let good=0;ins.forEach(x=>{const value=x.value.trim().toLowerCase().replace(/[.!?]+$/,'');const ok=value===x.dataset.answer||value===x.dataset.alt;x.className=`text-input ${ok?'correct':'wrong'}`;if(ok)good++});showFb(fb,good===ins.length,`${good} of ${ins.length} correct${good===ins.length?' — amazing work! ✨':'. Check the red boxes and try again.'}`);if(good===ins.length)reward(id,points)}
+    function checkTwoGroups(){const ins=[...document.querySelectorAll('#evenSequence input, #oddSequence input')];let good=0;ins.forEach(x=>{const ok=x.value.trim().toLowerCase()===x.dataset.answer;x.className=`text-input ${ok?'correct':'wrong'}`;if(ok)good++});showFb('sequenceFb',good===ins.length,`${good} of ${ins.length} correct${good===ins.length?' — both sequences are complete! ✨':'. Follow the pattern: add two each time.'}`);if(good===ins.length)reward('numberSequences',15)}
+    function toggleTimer(){const b=document.getElementById('timerBtn');if(timer){clearInterval(timer);timer=null;b.textContent='▶'}else{b.textContent='⏸';timer=setInterval(()=>{if(seconds<=0){clearInterval(timer);timer=null;b.textContent='▶';return}seconds--;const m=Math.floor(seconds/60),s=seconds%60;document.getElementById('time').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`},1000)}}
+    document.addEventListener('keydown',e=>{if(e.target.matches('input'))return;if(e.key==='ArrowRight')go(current+1);if(e.key==='ArrowLeft')go(current-1)});
+    go(0);
+  </script>
+</body>
+</html>
