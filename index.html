@@ -1,330 +1,1310 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>English Adventure — BR/CR, Numbers & Colours</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root{--ink:#18233d;--muted:#68728a;--blue:#4f6df5;--purple:#7839db;--pink:#f33d89;--cyan:#27c2df;--yellow:#ffd34e;--green:#23c889;--orange:#ff8a34;--card:#fff;--bg:#11162f;--r:24px}
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{min-height:100vh;background:radial-gradient(circle at 15% 15%,#29316b 0,transparent 30%),radial-gradient(circle at 90% 80%,#50205b 0,transparent 32%),var(--bg);color:var(--ink);font-family:Nunito,sans-serif;display:flex;flex-direction:column}
-    button,input,select{font:inherit}
-    button{cursor:pointer}
-    header{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 22px;background:#10152de8;border-bottom:1px solid #ffffff1d;backdrop-filter:blur(16px);color:#fff}
-    .brand{display:flex;align-items:center;gap:10px;font-family:Fredoka;font-size:20px;font-weight:700}.logo{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--cyan),var(--purple));box-shadow:0 6px 18px #27c2df55}.badge{font:800 10px Nunito;padding:3px 7px;border-radius:20px;background:#ffd34e22;color:var(--yellow)}
-    .hub{display:flex;align-items:center;gap:9px}.timer,.score{display:flex;align-items:center;gap:7px;padding:7px 12px;border-radius:99px;background:#ffffff12;border:1px solid #ffffff1d;font-family:Fredoka;font-weight:700}.score{color:var(--yellow)}.icon-btn{border:0;color:#fff;background:#ffffff18;border-radius:50%;width:27px;height:27px}
-    .progress{height:4px;background:#ffffff14}.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--pink),var(--yellow));transition:.35s}
-    main{width:min(1060px,100%);margin:auto;padding:22px 18px;display:flex;align-items:center;flex:1}
-    .slide{display:none;width:100%;animation:in .35s ease}.slide.active{display:block}@keyframes in{from{opacity:0;transform:translateY(12px)}}
-    .card{background:#f9fbff;border:1px solid #ffffff88;border-radius:var(--r);box-shadow:0 25px 65px #0006;padding:30px;overflow:hidden;position:relative}
-    .card:before{content:"";position:absolute;width:240px;height:240px;border-radius:50%;background:#6a78ff0b;right:-80px;top:-100px}
-    .slide-head{position:relative;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;border-bottom:2px dashed #dfe4ef;padding-bottom:15px;margin-bottom:22px}.tag{display:inline-block;padding:5px 11px;border-radius:99px;background:#e8edff;color:#4258c9;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px}.slide h2{font:700 clamp(24px,4vw,33px) Fredoka;margin-top:5px}.sub{color:var(--muted);margin-top:4px}.speak{border:1px solid #afe4f4;background:#e5f8fd;color:#087c9e;padding:8px 13px;border-radius:99px;font-weight:800}
-    .hero{text-align:center;padding:38px 20px}.hero-art{font-size:76px}.hero h1{font:700 clamp(38px,7vw,65px) Fredoka;background:linear-gradient(90deg,var(--cyan),var(--purple),var(--pink));color:transparent;background-clip:text}.hero p{max-width:680px;margin:12px auto 25px;color:var(--muted);font-size:18px}.start{border:0;color:#fff;background:linear-gradient(135deg,var(--blue),var(--purple));padding:14px 25px;border-radius:99px;font-weight:800;box-shadow:0 8px 20px #6048df55}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}.tile{background:#fff;border:2px solid #e8ebf4;border-radius:18px;padding:18px;text-align:center;transition:.2s}.tile:hover{transform:translateY(-3px);border-color:#9caafc}.emoji{font-size:54px;line-height:1.2}.word{font:700 25px Fredoka;margin-top:7px}.blend{color:var(--pink)}
-    .formula{display:flex;align-items:center;justify-content:center;gap:15px;flex-wrap:wrap;margin:22px}.letter{display:grid;place-items:center;min-width:74px;height:74px;border-radius:15px;background:#fff;box-shadow:0 6px 20px #27335b19;font:700 42px Fredoka;color:var(--pink)}.plus{font:700 30px Fredoka}.result{color:var(--purple)}
-    .question{background:#fff;border:2px solid #e6eaf4;border-radius:17px;padding:15px;margin:11px 0}.q-title{font-weight:800;margin-bottom:10px}.options{display:flex;gap:8px;flex-wrap:wrap}.option{border:2px solid #dce2ef;background:#fff;border-radius:12px;padding:9px 14px;font-weight:800;color:var(--ink)}.option.selected{border-color:var(--blue);background:#edf0ff}.option.correct{border-color:var(--green);background:#e9fff6}.option.wrong{border-color:#ef476f;background:#fff0f3}
-    .check{border:0;color:#fff;background:linear-gradient(135deg,var(--green),#079c75);padding:11px 20px;border-radius:99px;font-weight:800;margin-top:14px}.feedback{display:none;margin-top:12px;border-radius:13px;padding:11px 15px;font-weight:800}.feedback.show{display:block}.feedback.ok{background:#e7fff5;color:#087a59}.feedback.no{background:#fff0f3;color:#be2348}
-    .write-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}.write-row{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid #e7eaf3;border-radius:15px;padding:11px}.write-row span{font-weight:800;flex:1}.text-input{width:135px;max-width:50%;padding:9px 11px;border:2px solid #dce2ef;border-radius:10px;outline:none}.text-input:focus{border-color:var(--blue)}.text-input.correct{border-color:var(--green);background:#effff9}.text-input.wrong{border-color:#ef476f;background:#fff4f6}
-    .number-board{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}.num{padding:10px 5px;border-radius:12px;background:#fff;text-align:center;border:2px solid #e6eaf4;font-weight:800}.num b{display:block;color:var(--blue);font:700 22px Fredoka}
-    .duo{display:grid;grid-template-columns:1fr 1fr;gap:18px}.character{background:linear-gradient(145deg,#eafcff,#f2ebff);border-radius:20px;padding:20px;text-align:center}.character .emoji{font-size:82px}.character p{color:var(--muted);line-height:1.55}
-    .colour-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:11px}.colour{border:3px solid #fff;box-shadow:0 3px 12px #1b25451b;border-radius:15px;padding:18px 5px;text-align:center;font-weight:900}.dark{color:#fff}
-    .scene{background:linear-gradient(#83ddf4 0 45%,#68cf69 45% 82%,#ddd 82%);border-radius:20px;padding:20px;display:flex;justify-content:center;gap:18px;flex-wrap:wrap;font-size:55px}.scene span{filter:drop-shadow(0 5px 3px #0002)}
-    footer{position:sticky;bottom:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 22px;background:#10152de8;border-top:1px solid #ffffff1d;backdrop-filter:blur(16px)}.nav{border:0;border-radius:99px;padding:11px 20px;color:#fff;background:linear-gradient(135deg,var(--blue),var(--purple));font-weight:800}.nav:disabled{opacity:.35}.counter{color:#abb5d2;font-weight:800;text-align:center}.dots{display:flex;gap:5px;justify-content:center;margin-bottom:3px}.dot{width:7px;height:7px;background:#58617d;border-radius:50%}.dot.active{width:20px;border-radius:9px;background:var(--cyan)}
-    @media(max-width:650px){header{padding:8px 12px}.brand span:not(.logo){display:none}.card{padding:20px 15px}.hub{gap:5px}.score,.timer{padding:6px 8px}.duo{grid-template-columns:1fr}.number-board{grid-template-columns:repeat(2,1fr)}footer{padding:9px 12px}.nav{padding:10px 14px}}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My English Book — fl, gl & In the classroom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#241c16; --muted:#7d6c5e; --paper:#fff6ee; --card:#fff;
+    --orange:#ff8c1a; --orange-d:#ef6d00; --pink:#ff4d88; --green:#129a62;
+    --blue:#2f7cf6; --red:#e23b4a; --line:#f0e0d2; --shadow:0 18px 50px #6a3b1a1c;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    min-height:100vh; display:flex; flex-direction:column; color:var(--ink);
+    font-family:Nunito,Trebuchet MS,sans-serif; font-weight:700;
+    background:
+      radial-gradient(900px 420px at -10% -20%, #ffd7ae, transparent 55%),
+      radial-gradient(700px 480px at 110% -10%, #ffd0e4, transparent 50%),
+      var(--paper);
+  }
+  button,input{font:inherit; color:inherit}
+  button{cursor:pointer}
+  button:focus-visible,input:focus-visible{outline:3px solid var(--blue); outline-offset:2px}
+  header{
+    position:sticky; top:0; z-index:20; display:flex; flex-wrap:wrap; gap:10px;
+    align-items:center; justify-content:space-between; padding:10px 16px;
+    background:#fffaf4eb; border-bottom:1px solid var(--line); backdrop-filter:blur(12px);
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-family:Fredoka,sans-serif; font-size:22px}
+  .logo{width:42px; height:42px; border-radius:14px; display:grid; place-items:center;
+    background:linear-gradient(135deg,var(--orange),var(--pink)); color:#fff; box-shadow:0 8px 16px #ff8c1a44}
+  .hub{display:flex; align-items:center; gap:8px}
+  .score,.menu-btn,.nav{
+    border:0; border-radius:999px; font-weight:800;
+  }
+  .score{background:#fff4d4; color:#9a6200; padding:8px 12px}
+  .menu-btn,.nav{background:var(--ink); color:#fff; padding:10px 16px}
+  .nav:disabled{opacity:.35; cursor:default}
+  .nav.next{background:linear-gradient(135deg,var(--orange),var(--orange-d))}
+  #nowplay{
+    flex:1 1 100%; display:flex; align-items:center; gap:10px;
+    background:#fff; border:2px solid var(--line); border-radius:999px; padding:6px 10px;
+  }
+  #nowplay[hidden]{display:none}
+  #npPause{border:0; background:var(--green); color:#fff; border-radius:999px; padding:6px 12px}
+  #npScrub{flex:1; height:10px; background:#f3e6da; border-radius:99px; cursor:pointer}
+  #npBar{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--orange),var(--pink)); border-radius:99px}
+  #npTime,#npName{font-size:13px; color:var(--muted); white-space:nowrap}
+  .progress{height:5px; background:#f3e4d6}
+  .progress>div{height:100%; width:0; background:linear-gradient(90deg,var(--orange),var(--pink)); transition:width .3s}
+  main{flex:1; width:min(1040px,100%); margin:0 auto; padding:22px 16px 28px}
+  .slide{display:none; animation:rise .35s ease}
+  .slide.active{display:block}
+  @keyframes rise{from{opacity:0; transform:translateY(10px)}}
+  .card{
+    background:var(--card); border:1px solid #fff; border-radius:28px; box-shadow:var(--shadow);
+    padding:22px; position:relative;
+  }
+  .head{display:flex; justify-content:space-between; gap:12px; align-items:flex-start; flex-wrap:wrap; margin-bottom:16px}
+  .tag{display:inline-block; background:#fff0e0; color:#c45a00; border-radius:999px; padding:4px 10px; font-size:12px; letter-spacing:.04em; text-transform:uppercase}
+  h1,h2{font-family:Fredoka,sans-serif; margin:4px 0}
+  h1{font-size:clamp(36px,6vw,58px); line-height:1}
+  h2{font-size:clamp(26px,4vw,36px); line-height:1.15}
+  .sub{color:var(--muted); margin:4px 0 0}
+  .listen{
+    display:inline-flex; align-items:center; gap:8px; border:0; color:#fff; font-weight:800;
+    background:linear-gradient(135deg,var(--orange),var(--orange-d)); border-radius:999px; padding:10px 14px 10px 8px;
+    box-shadow:0 8px 18px #ff8c1a44;
+  }
+  .listen.on{background:var(--green); box-shadow:none}
+  .listen .when-on{display:none}
+  .listen.on .when-off{display:none}
+  .listen.on .when-on{display:inline}
+  .disc{
+    width:34px; height:34px; border-radius:50%; display:grid; place-items:center;
+    background:#fff; color:var(--orange-d); font-family:Fredoka,sans-serif;
+  }
+  .listen.on .disc{color:var(--green)}
+  .ribbon{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px}
+  .ribbon span{background:#fff3e4; border-radius:999px; padding:6px 10px; color:#b56a3a}
+  .ribbon .now{background:var(--orange); color:#fff}
+  .sun{
+    border-radius:22px; padding:16px; margin:12px 0;
+    background:repeating-conic-gradient(from 0deg,#ffb347 0 12deg,#ff981f 0 24deg);
+  }
+  .formula{display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap}
+  .letter{
+    min-width:68px; height:68px; border:0; border-radius:16px; background:#fff;
+    box-shadow:0 8px 0 #0001; font-family:Fredoka,sans-serif; font-size:40px; color:var(--pink);
+  }
+  .letter.big{min-width:92px; color:#d4146a}
+  .op{color:#fff; font-family:Fredoka,sans-serif; font-size:32px; text-shadow:0 2px 0 #0002}
+  .wordline{display:flex; align-items:center; justify-content:center; gap:14px; margin-top:12px}
+  .wordline b{background:#fff; border-radius:14px; padding:8px 16px; font-family:Fredoka,sans-serif; font-size:32px}
+  .bl{color:#ff3d7a}
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px}
+  .tile,.vcard,.obj{
+    background:#fff; border:2px solid var(--line); border-radius:18px; padding:12px; text-align:center;
+    transition:.15s transform;
+  }
+  .tile{border:0; width:100%}
+  .vcard{border:0; width:100%}
+  .tile:hover,.vcard:hover,.obj:hover{transform:translateY(-3px)}
+  .hot{outline:3px solid var(--orange); transform:translateY(-3px); background:#fff7ea}
+  .hit{outline:3px solid var(--green); background:#f1fff8}
+  .miss{animation:shake .35s}
+  @keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+  .cap{font-family:Fredoka,sans-serif; font-size:26px; margin-top:4px}
+  .cover .cap{color:transparent}
+  .ico{width:84px; height:84px; display:block; margin:0 auto}
+  .quiz-row{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:14px 0}
+  .ghost,.check{
+    border:0; border-radius:999px; padding:11px 16px; font-weight:800;
+  }
+  .ghost{background:#fff0e4; color:#c45a00}
+  .check{background:linear-gradient(135deg,var(--green),#0c7d4e); color:#fff; margin-top:14px}
+  .q{display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:#fff; border:2px solid var(--line); border-radius:16px; padding:10px; margin:8px 0}
+  .q button{
+    border:2px solid #eadfD4; background:#fff; border-radius:999px; padding:8px 14px; font-weight:800;
+  }
+  .q button.selected{box-shadow:0 0 0 3px #fff, 0 0 0 6px var(--red)}
+  .q button.good{background:#e9fff5; box-shadow:0 0 0 3px #fff, 0 0 0 6px var(--green)}
+  .q button.bad{background:#fff1f3; border-color:var(--red)}
+  .q.locked button{cursor:default}
+  .example{opacity:.95}
+  .eg{font-size:12px; color:var(--muted); background:#f6f0ea; border-radius:999px; padding:3px 8px}
+  .feedback{display:none; margin-top:12px; border-radius:14px; padding:12px 14px; font-weight:800}
+  .feedback.show{display:block}
+  .feedback.ok{background:#e7fff4; color:#08784d}
+  .feedback.no{background:#fff0f3; color:#b42348}
+  .look{border:3px solid #d6ee55; border-radius:18px; padding:12px 14px; margin:12px 0; background:#fff}
+  .look .bang{font-family:Fredoka,sans-serif; color:var(--red); font-size:28px; margin-right:8px}
+  .look p{margin:4px 0}
+  .writes{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:10px}
+  .writes label,.exline{
+    display:flex; align-items:center; gap:8px; background:#fff; border:2px solid var(--line);
+    border-radius:14px; padding:10px 12px;
+  }
+  input[type="text"]{
+    width:100%; min-width:0; border:2px solid #eadfD4; border-radius:10px; padding:8px 10px; background:#fff;
+  }
+  input.correct{border-color:var(--green); background:#f1fff8}
+  input.wrong{border-color:var(--red); background:#fff5f6}
+  .comic{display:grid; grid-template-columns:1fr 1fr; gap:12px; background:linear-gradient(#f0d7a8,#e7c48a); padding:14px; border-radius:24px}
+  .panel{background:#fffdf8; border-radius:16px; padding:10px; text-align:left}
+  .pn{display:inline-grid; place-items:center; width:26px; height:26px; border-radius:50%; background:var(--orange); color:#fff; font-family:Fredoka,sans-serif}
+  .scene{height:150px; border-radius:12px; position:relative; overflow:hidden; margin:8px 0}
+  .sky{background:linear-gradient(#9ad8ff,#d9f3ff 55%, #b7e39a 55%)}
+  .roomg{background:linear-gradient(#d9f8d0,#f7fff4)}
+  .house{position:absolute; left:50%; bottom:18px; width:92px; height:78px; transform:translateX(-50%); background:#ffe14a; border:3px solid #e2b400; border-radius:8px 8px 0 0}
+  .house:before{content:""; position:absolute; left:-8px; right:-8px; top:-22px; height:28px; background:#ff8c1a; clip-path:polygon(50% 0,100% 100%,0 100%)}
+  .door{position:absolute; left:32px; bottom:0; width:26px; height:38px; background:#8fd3f4; border:2px solid #3a88a8}
+  .club{position:absolute; left:18px; top:8px; background:#fff; color:var(--red); font-family:Fredoka,sans-serif; padding:0 6px; border-radius:4px}
+  .actor{position:absolute; width:64px; height:64px}
+  .bub{background:#fff; border:2px solid #d5e2f2; border-radius:14px; padding:8px 10px; margin-top:6px}
+  .mini-clock{width:54px; height:54px; border-radius:50%; background:#fff; border:3px solid var(--ink); display:grid; place-items:center; font-size:12px; position:absolute; top:8px; right:8px}
+  .lex{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:12px}
+  .lex button{border:0; background:#e8fff3; border-radius:999px; padding:6px 10px}
+  .lex .swb{background:#fff3d4}
+  .blank{
+    min-width:96px; min-height:36px; border:0; border-bottom:3px solid var(--ink); background:#fff8e6;
+    border-radius:8px 8px 0 0; font-family:Fredoka,sans-serif;
+  }
+  .blank.good{background:#e9fff5; border-color:var(--green)}
+  .blank.bad{background:#fff1f3; border-color:var(--red)}
+  .chip{border:2px solid #eadfD4; background:#fff; border-radius:999px; padding:7px 12px}
+  .chip.armed{border-color:var(--blue); background:#eef4ff}
+  .chip.used{opacity:.35}
+  .bank{display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 12px}
+  .bag-scene{
+    display:grid; grid-template-columns:1.5fr .7fr; gap:12px; background:linear-gradient(#fff,#fff4e8);
+    border:2px solid var(--line); border-radius:22px; padding:14px;
+  }
+  .items{display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end}
+  .open-case{position:relative; background:#fff; border-radius:16px; padding:10px 8px 12px; border:4px solid #ff8ebf; box-shadow:inset 0 0 0 3px #9ad8ff}
+  .open-case:after{content:""; position:absolute; left:10px; right:10px; bottom:5px; height:4px; background:#ff8ebf; border-radius:6px}
+  .prow{display:flex; gap:4px}
+  .prow .ico{width:18px; height:48px}
+  .shut-case{
+    width:132px; height:58px; border-radius:16px; border:3px solid #f3a0c4;
+    background:#f7d6e8 radial-gradient(#e86b9a 2.5px, transparent 3px); background-size:16px 16px; position:relative;
+  }
+  .shut-case:after{content:""; position:absolute; left:10px; right:10px; top:24px; height:6px; background:#fff; border-radius:6px}
+  .pack{
+    background:linear-gradient(#ffe14a,#ffc400); border-radius:28px 28px 18px 18px; min-height:220px;
+    display:grid; place-items:center; border:3px solid #f0b400; position:relative;
+  }
+  .pack:before{content:""; position:absolute; left:18px; right:18px; top:28px; height:46px; background:#ffb000; border-radius:0 0 40px 40px}
+  .pack span{position:relative; font-family:Fredoka,sans-serif; background:#fff; padding:4px 8px; border-radius:8px}
+  .group{display:flex; gap:8px; align-items:flex-end}
+  .nb{width:40px; height:54px; margin-right:-12px}
+  .sm{width:54px; height:54px}
+  .duo{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  .mean{border:2px dashed #cfe8ff; border-radius:14px; padding:8px 10px; margin:6px 0; background:#f7fbff}
+  .dwords,.dmeans{display:flex; flex-direction:column; gap:8px}
+  #dict button{text-align:left; border:2px solid var(--line); background:#fff; border-radius:14px; padding:10px 12px}
+  #dict button.picked{border-color:var(--blue); background:#eef4ff}
+  #dict button.locked{border-color:var(--green); background:#e9fff5}
+  .classroom{
+    background:linear-gradient(#c8ecff 0 58%, #f0d2a8 58%);
+    border-radius:22px; padding:14px; border:2px solid #d7ebf6;
+  }
+  .wall{display:flex; justify-content:space-between; align-items:flex-start; gap:8px}
+  .floor{display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; margin-top:16px}
+  .pair{display:flex; gap:6px; align-items:flex-end; background:#ffffff88; border-radius:16px; padding:8px}
+  .obj{background:transparent; border:2px solid transparent; padding:4px}
+  .obj.hot,.obj.hit{background:#fff}
+  .picgrid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  .picgrid figure{margin:0; background:#fff; border:2px solid var(--line); border-radius:18px; padding:12px; text-align:center}
+  .scribble{height:28px; margin:-8px 18px 0; border-radius:40px; background:radial-gradient(circle at 30% 50%, #7ec8ff 0 40%, transparent 42%), radial-gradient(circle at 60% 50%, #7ec8ff 0 46%, transparent 48%)}
+  .snake-wrap{background:linear-gradient(#ffb703,#fb8500); border-radius:40px 60px 60px 40px; padding:12px 34px 12px 12px; display:flex; flex-wrap:wrap; align-items:center; gap:2px}
+  .shead{width:54px; height:54px; border-radius:50%; background:#ffd25a; flex:none; position:relative; box-shadow:inset 0 -6px 0 #f0a800}
+  .shead:before,.shead:after{content:""; position:absolute; top:16px; width:10px; height:10px; background:#241c16; border-radius:50%}
+  .shead:before{left:12px} .shead:after{right:12px}
+  .let{
+    flex:1 0 30px; max-width:38px; height:36px; padding:0; border:0; border-radius:50%; background:transparent;
+    font-family:Fredoka,sans-serif; font-size:20px; color:#3a2410;
+  }
+  .let.found{background:#fff4c2; box-shadow:0 0 0 3px #fff}
+  .let.anchor{background:#fff}
+  .hero{text-align:center; padding:28px 12px 12px}
+  .doors{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-top:18px}
+  .door-card{text-align:left; border:0; background:#fff; border-radius:22px; padding:16px; box-shadow:0 10px 0 #0001; border-top:8px solid var(--orange)}
+  .door-card.story{border-top-color:#e2b15a}
+  .door-card.class{border-top-color:var(--pink)}
+  .door-card p{color:var(--muted); margin:6px 0 0}
+  #menu{position:fixed; inset:0; background:#241c1690; display:grid; place-items:center; z-index:40; padding:18px}
+  #menu[hidden]{display:none}
+  .sheet{width:min(460px,100%); max-height:80vh; overflow:auto; background:#fff; border-radius:24px; padding:16px}
+  .sheet h3{margin:14px 0 6px; font-family:Fredoka,sans-serif}
+  .sheet button.jump{display:block; width:100%; text-align:left; border:0; background:#fff6ee; border-radius:12px; padding:10px 12px; margin:4px 0}
+  footer{
+    position:sticky; bottom:0; z-index:20; display:flex; justify-content:space-between; align-items:center;
+    gap:10px; padding:10px 16px; background:#fffaf4eb; border-top:1px solid var(--line); backdrop-filter:blur(12px);
+  }
+  .counter{text-align:center; color:var(--muted)}
+  .counter b{display:block; color:var(--ink)}
+  @media(max-width:760px){
+    .comic,.duo,.picgrid,.bag-scene{grid-template-columns:1fr}
+    .letter{min-width:54px; height:54px; font-size:30px}
+    .scene{height:130px}
+    h1{font-size:40px}
+  }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
 </head>
 <body>
-  <header>
-    <div class="brand"><span class="logo">🚀</span><span>English Adventure</span><small class="badge">Unit 1</small></div>
-    <div class="hub">
-      <div class="timer">⏱ <span id="time">60:00</span><button class="icon-btn" id="timerBtn" onclick="toggleTimer()">▶</button></div>
-      <div class="score">⭐ <span id="score">0</span></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="fly" viewBox="0 0 64 64">
+    <ellipse cx="16" cy="30" rx="14" ry="8" fill="#e7fbff" transform="rotate(-30 16 30)"/>
+    <ellipse cx="48" cy="30" rx="14" ry="8" fill="#e7fbff" transform="rotate(30 48 30)"/>
+    <ellipse cx="32" cy="36" rx="16" ry="13" fill="#2ec5e0"/>
+    <circle cx="25" cy="33" r="6.5" fill="#fff"/><circle cx="40" cy="33" r="6.5" fill="#fff"/>
+    <circle cx="26" cy="34" r="3" fill="#17324a"/><circle cx="41" cy="34" r="3" fill="#17324a"/>
+    <path d="M26 44q6 5 12 0" fill="none" stroke="#14556a" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="crab" viewBox="0 0 64 64">
+    <circle cx="32" cy="36" r="16" fill="#ff5a3c"/>
+    <circle cx="22" cy="18" r="4" fill="#ff5a3c"/><circle cx="42" cy="18" r="4" fill="#ff5a3c"/>
+    <circle cx="22" cy="17" r="2" fill="#17324a"/><circle cx="42" cy="17" r="2" fill="#17324a"/>
+    <path d="M8 28q8 4 8 12" fill="none" stroke="#ff5a3c" stroke-width="4" stroke-linecap="round"/>
+    <path d="M56 28q-8 4-8 12" fill="none" stroke="#ff5a3c" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="10" cy="26" r="5" fill="#ff5a3c"/><circle cx="54" cy="26" r="5" fill="#ff5a3c"/>
+    <path d="M24 40q8 6 16 0" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="croc" viewBox="0 0 64 64">
+    <ellipse cx="30" cy="36" rx="20" ry="14" fill="#3cb86a"/>
+    <path d="M34 32h24l-6 8H36z" fill="#8ee0a8"/>
+    <circle cx="20" cy="30" r="4" fill="#fff"/><circle cx="21" cy="30" r="2" fill="#17324a"/>
+    <path d="M40 38h12" stroke="#17324a" stroke-width="2"/>
+    <path d="M18 46q10 8 22 2" fill="none" stroke="#17824a" stroke-width="3" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="flag" viewBox="0 0 64 64">
+    <rect x="14" y="4" width="4" height="56" rx="2" fill="#c5c8d0"/>
+    <path d="M18 8h34l-8 12 8 12H18z" fill="#e23b4a"/>
+  </symbol>
+  <symbol id="flagb" viewBox="0 0 64 64">
+    <rect x="14" y="4" width="4" height="56" rx="2" fill="#c5c8d0"/>
+    <path d="M18 8h32v24H18z" fill="#1d4e89"/>
+    <path d="M18 8l16 12L18 32z" fill="#222"/>
+  </symbol>
+  <symbol id="globe" viewBox="0 0 64 64">
+    <circle cx="32" cy="26" r="18" fill="#4aa3ff"/>
+    <path d="M18 24c6 2 8 8 4 12 8-2 14 0 16 4 2-8 6-12 8-16-6 2-10 0-14-4-4 2-10 2-14 4z" fill="#3dba6a"/>
+    <path d="M32 44v8M20 54h24" stroke="#d7a15a" stroke-width="4" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="glass" viewBox="0 0 48 64">
+    <path d="M8 6h32l-6 40a10 10 0 0 1-20 0z" fill="#c9eeff" stroke="#6eb6db" stroke-width="3"/>
+    <path d="M16 16h6" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="broom" viewBox="0 0 64 64">
+    <path d="M14 6l16 34" stroke="#c48a3a" stroke-width="4" stroke-linecap="round"/>
+    <path d="M22 36c10-6 22 6 18 16-12-2-20 4-24 8 4-10 2-16 6-24z" fill="#f0c14a"/>
+  </symbol>
+  <symbol id="book" viewBox="0 0 48 64">
+    <path d="M6 8h30a6 6 0 0 1 6 6v40a4 4 0 0 1-4 4H10a6 6 0 0 1 0-12" fill="currentColor"/>
+    <path d="M10 8v42" stroke="#fff" stroke-width="3"/>
+  </symbol>
+  <symbol id="notebook" viewBox="0 0 48 64">
+    <rect x="8" y="4" width="32" height="56" rx="3" fill="currentColor"/>
+    <rect x="14" y="4" width="4" height="56" fill="#fff"/>
+  </symbol>
+  <symbol id="pencil" viewBox="0 0 32 64">
+    <polygon points="16,2 26,16 6,16" fill="#f3d2a4"/>
+    <polygon points="16,2 19,8 13,8" fill="#333"/>
+    <rect x="6" y="16" width="20" height="38" fill="currentColor"/>
+    <rect x="6" y="50" width="20" height="8" rx="1" fill="#eee"/>
+  </symbol>
+  <symbol id="pen" viewBox="0 0 32 64">
+    <rect x="10" y="6" width="12" height="14" rx="2" fill="#888"/>
+    <rect x="10" y="18" width="12" height="34" fill="currentColor"/>
+    <polygon points="10,52 22,52 16,62" fill="#ddd"/>
+  </symbol>
+  <symbol id="sharpener" viewBox="0 0 64 40">
+    <rect x="4" y="8" width="56" height="24" rx="6" fill="currentColor"/>
+    <circle cx="46" cy="20" r="7" fill="#2a241c"/>
+    <circle cx="46" cy="20" r="3" fill="#eee"/>
+  </symbol>
+  <symbol id="eraser" viewBox="0 0 64 36">
+    <rect x="2" y="6" width="60" height="24" rx="5" fill="currentColor"/>
+    <rect x="2" y="6" width="20" height="24" rx="5" fill="#000" opacity=".15"/>
+  </symbol>
+  <symbol id="rubber" viewBox="0 0 64 36">
+    <rect x="4" y="6" width="56" height="24" rx="4" fill="#f28b2e"/>
+    <rect x="32" y="6" width="28" height="24" rx="4" fill="#3a7bff"/>
+  </symbol>
+  <symbol id="ruler" viewBox="0 0 64 24">
+    <rect x="1" y="3" width="62" height="18" rx="2" fill="#f6d48a" stroke="#e0b45a"/>
+    <path d="M8 3v8M16 3v5M24 3v8M32 3v5M40 3v8M48 3v5M56 3v8" stroke="#a87432" stroke-width="1.6"/>
+  </symbol>
+  <symbol id="scissors" viewBox="0 0 64 64">
+    <circle cx="16" cy="18" r="8" fill="none" stroke="currentColor" stroke-width="4"/>
+    <circle cx="16" cy="46" r="8" fill="none" stroke="currentColor" stroke-width="4"/>
+    <path d="M22 22 L54 12 L50 20 L24 32z" fill="#b7bcc6"/>
+    <path d="M22 42 L54 52 L50 44 L24 32z" fill="#d5d8df"/>
+  </symbol>
+  <symbol id="sandwich" viewBox="0 0 64 48">
+    <path d="M6 20 Q32 2 58 20v6Q32 16 6 26z" fill="#f3d2a0"/>
+    <rect x="6" y="24" width="52" height="6" fill="#7bc96f"/>
+    <path d="M6 30 Q32 44 58 30v6Q32 50 6 36z" fill="#e7b87a"/>
+  </symbol>
+  <symbol id="bin" viewBox="0 0 64 64">
+    <rect x="14" y="14" width="36" height="8" rx="2" fill="#4e9a32"/>
+    <path d="M18 22h28l-3 34H21z" fill="#8fd14f"/>
+    <rect x="28" y="6" width="8" height="10" rx="2" fill="#333"/>
+  </symbol>
+  <symbol id="board" viewBox="0 0 80 56">
+    <rect x="2" y="2" width="76" height="42" rx="4" fill="#2f6f4e"/>
+    <rect x="7" y="7" width="66" height="32" fill="#f3fff7"/>
+    <path d="M16 30q12-16 24-4t22-10" fill="none" stroke="#2f7cf6" stroke-width="3" stroke-linecap="round"/>
+    <rect x="36" y="44" width="8" height="10" fill="#d7b07a"/>
+  </symbol>
+  <symbol id="chair" viewBox="0 0 48 64">
+    <rect x="8" y="4" width="32" height="28" rx="4" fill="#7c5cbf"/>
+    <rect x="8" y="30" width="32" height="8" fill="#6549a3"/>
+    <rect x="12" y="38" width="5" height="20" fill="#6b5138"/>
+    <rect x="31" y="38" width="5" height="20" fill="#6b5138"/>
+  </symbol>
+  <symbol id="desk" viewBox="0 0 72 48">
+    <rect x="4" y="6" width="64" height="12" rx="2" fill="#e7b15a"/>
+    <rect x="10" y="18" width="6" height="26" fill="#c48a3a"/>
+    <rect x="56" y="18" width="6" height="26" fill="#c48a3a"/>
+  </symbol>
+  <symbol id="clock" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="26" fill="#fff" stroke="#241c16" stroke-width="4"/>
+    <path d="M32 32 V16" stroke="#e23b4a" stroke-width="3" stroke-linecap="round"/>
+    <path d="M32 32 H46" stroke="#241c16" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="32" cy="32" r="3" fill="#241c16"/>
+  </symbol>
+</svg>
+
+<header>
+  <div class="brand"><span class="logo" aria-hidden="true">Aa</span> My English Book</div>
+  <div class="hub">
+    <div class="score">★ <span id="score">0</span></div>
+    <button type="button" class="menu-btn" id="menuBtn">Lessons</button>
+  </div>
+  <div id="nowplay" hidden>
+    <button type="button" id="npPause">Pause</button>
+    <div id="npScrub" role="slider" aria-label="Audio position" aria-valuemin="0" aria-valuemax="100"><i id="npBar"></i></div>
+    <span id="npTime">0:00</span>
+    <span id="npName">Track</span>
+  </div>
+</header>
+<div class="progress"><div id="progress"></div></div>
+
+<main>
+  <section class="slide active" data-title="Home">
+    <div class="card hero">
+      <div class="logo" style="margin:0 auto 8px; width:64px; height:64px; font-size:28px">Aa</div>
+      <h1>Listen, point and read</h1>
+      <p class="sub">Sounds <b>fl</b> and <b>gl</b>, the story <b>The Club</b>, and <b>In the classroom</b>.</p>
+      <p class="sub">Слушай аудио, смотри на картинки и выполняй задания.</p>
+      <div class="doors">
+        <button type="button" class="door-card" data-jump="1">
+          <svg class="ico" style="width:64px;height:64px"><use href="#fly"/></svg>
+          <h2>Sounds fl &amp; gl</h2>
+          <p>Listen and learn. Then point and read: fly, flag, globe, glass.</p>
+        </button>
+        <button type="button" class="door-card story" data-jump="3">
+          <svg class="ico" style="width:64px;height:64px"><use href="#croc"/></svg>
+          <h2>The Club</h2>
+          <p>Look and listen. Read along with the fly, the crab and the crocodile.</p>
+        </button>
+        <button type="button" class="door-card class" data-jump="5">
+          <svg class="ico" style="width:64px;height:64px; color:#e23"><use href="#pencil"/></svg>
+          <h2>In the classroom</h2>
+          <p>Jen’s bag, a / an, plurals, and classroom objects.</p>
+        </button>
+      </div>
     </div>
-  </header>
-  <div class="progress"><div id="progress"></div></div>
-  <main>
-    <section class="slide active"><div class="card hero">
-      <div class="hero-art">🧹 🦀 🔢 🎨</div>
-      <h1>Super English Quest!</h1>
-      <p>Practise the sounds <b>BR</b> and <b>CR</b>, meet Dug and Kit, count from 1 to 100 and learn the colours.</p>
-      <button class="start" onclick="go(1)">Start the adventure →</button>
-    </div></section>
+  </section>
 
-    <section class="slide"><div class="card">
-      <div class="slide-head"><div><span class="tag">Phonics • A–B</span><h2>Listen and learn: BR / CR</h2><p class="sub">Put two sounds together, then read the word.</p></div><button class="speak" onclick="say('B, R, br. Broom. C, R, cr. Crab.')">🔊 Listen</button></div>
-      <div class="formula"><span class="letter">b</span><span class="plus">+</span><span class="letter">r</span><span class="plus">=</span><span class="letter result">br</span></div>
-      <div class="formula"><span class="letter">c</span><span class="plus">+</span><span class="letter">r</span><span class="plus">=</span><span class="letter result">cr</span></div>
-      <div class="grid">
-        <button class="tile" onclick="say('broom')"><div class="emoji">🧹</div><div class="word"><span class="blend">br</span>oom</div></button>
-        <button class="tile" onclick="say('bride')"><div class="emoji">👰</div><div class="word"><span class="blend">br</span>ide</div></button>
-        <button class="tile" onclick="say('crab')"><div class="emoji">🦀</div><div class="word"><span class="blend">cr</span>ab</div></button>
-        <button class="tile" onclick="say('crocodile')"><div class="emoji">🐊</div><div class="word"><span class="blend">cr</span>ocodile</div></button>
+  <section class="slide" data-group="Sounds" data-title="A · Listen and learn">
+    <div class="card">
+      <div class="head">
+        <div>
+          <span class="tag">Unit 1 · A</span>
+          <h2>Listen and learn</h2>
+          <p class="sub">Tap a letter, then listen to the track.</p>
+        </div>
+        <button type="button" class="listen" data-src="audio/Track12.mp3" data-name="Track 12 · Listen and learn"><i class="disc">12</i><span class="when-off">Listen</span><span class="when-on">Pause</span></button>
       </div>
-    </div></section>
-
-    <section class="slide"><div class="card">
-      <div class="slide-head"><div><span class="tag">Phonics • C</span><h2>Which ones have the same sound?</h2><p class="sub">Choose the two words with the same beginning sound.</p></div></div>
-      <div id="soundQuiz">
-        <div class="question" data-answer="crocodile,crab"><div class="q-title">1. Choose two:</div><div class="options"><button class="option" data-v="crocodile">🐊 crocodile</button><button class="option" data-v="house">🏠 house</button><button class="option" data-v="crab">🦀 crab</button></div></div>
-        <div class="question" data-answer="broom,brown"><div class="q-title">2. Choose two:</div><div class="options"><button class="option" data-v="broom">🧹 broom</button><button class="option" data-v="black">⚫ black</button><button class="option" data-v="brown">🟤 brown</button></div></div>
-        <div class="question" data-answer="broom,bride"><div class="q-title">3. Choose two:</div><div class="options"><button class="option" data-v="clock">⏰ clock</button><button class="option" data-v="broom">🧹 broom</button><button class="option" data-v="bride">👰 bride</button></div></div>
+      <div class="ribbon" aria-hidden="true"><span>bl</span><span>cl</span><span>br</span><span>cr</span><span class="now">fl</span><span class="now">gl</span></div>
+      <div class="sun">
+        <div class="formula">
+          <button type="button" class="letter" data-say="f">f</button>
+          <span class="op">+</span>
+          <button type="button" class="letter" data-say="l">l</button>
+          <span class="op">=</span>
+          <button type="button" class="letter big" data-say="fl">fl</button>
+        </div>
+        <div class="wordline">
+          <svg class="ico"><use href="#fly"/></svg>
+          <b><span class="bl">fl</span>y</b>
+          <button type="button" class="ghost" data-say="fly">Say fly</button>
+        </div>
       </div>
-      <button class="check" onclick="checkMulti('soundQuiz','soundFb',10)">Check answers</button><div class="feedback" id="soundFb"></div>
-    </div></section>
-
-    <section class="slide"><div class="card">
-      <div class="slide-head"><div><span class="tag">Phonics • D</span><h2>Make and write the words</h2><p class="sub">Join the beginning and ending.</p></div><button class="speak" onclick="say('crab, broom, blanket, crocodile, clock, bride')">🔊 Listen</button></div>
-      <div class="write-grid" id="blendWrite">
-        <label class="write-row"><span>1. cr + ab</span><input class="text-input" data-answer="crab"></label>
-        <label class="write-row"><span>2. br + oom</span><input class="text-input" data-answer="broom"></label>
-        <label class="write-row"><span>3. bl + anket</span><input class="text-input" data-answer="blanket"></label>
-        <label class="write-row"><span>4. cr + ocodile</span><input class="text-input" data-answer="crocodile"></label>
-        <label class="write-row"><span>5. cl + ock</span><input class="text-input" data-answer="clock"></label>
-        <label class="write-row"><span>6. br + ide</span><input class="text-input" data-answer="bride"></label>
+      <div class="sun">
+        <div class="formula">
+          <button type="button" class="letter" data-say="g">g</button>
+          <span class="op">+</span>
+          <button type="button" class="letter" data-say="l">l</button>
+          <span class="op">=</span>
+          <button type="button" class="letter big" data-say="gl">gl</button>
+        </div>
+        <div class="wordline">
+          <svg class="ico"><use href="#globe"/></svg>
+          <b><span class="bl">gl</span>obe</b>
+          <button type="button" class="ghost" data-say="globe">Say globe</button>
+        </div>
       </div>
-      <button class="check" onclick="checkInputs('blendWrite','blendFb',12)">Check words</button><div class="feedback" id="blendFb"></div>
-    </div></section>
+    </div>
+  </section>
 
-    <section class="slide"><div class="card">
-      <div class="slide-head"><div><span class="tag">Chant • E</span><h2>Listen, chant and read!</h2></div><button class="speak" onclick="say('The bride wants a broom, a crab, and a crocodile.',.75)">🔊 Chant</button></div>
-      <div style="text-align:center;padding:30px 10px">
-        <div style="font-size:75px">👰 🧹 🦀 🐊</div>
-        <p style="font:700 clamp(27px,5vw,44px) Fredoka;line-height:1.5;margin-top:18px">The <span class="blend">bride</span> wants a <span class="blend">broom</span>,<br>a <span class="blend">crab</span>, and a <span class="blend">crocodile</span>.</p>
+  <section class="slide" data-group="Sounds" data-title="B · Listen, point and read">
+    <div class="card">
+      <div class="head">
+        <div>
+          <span class="tag">Unit 1 · B</span>
+          <h2>Listen, point and read</h2>
+          <p class="sub">Play the track. Then point when you hear the word.</p>
+        </div>
+        <button type="button" class="listen" data-src="audio/Track13.mp3" data-name="Track 13 · Listen, point and read"><i class="disc">13</i><span class="when-off">Listen</span><span class="when-on">Pause</span></button>
       </div>
-    </div></section>
-
-    <section class="slide"><div class="card">
-      <div class="slide-head"><div><span class="tag">Meet Dug and Kit</span><h2>Read about the friends</h2><p class="sub">Dug has a secret superhero identity!</p></div><button class="speak" onclick="say('This is Dug. Dug is also Superdug. Superdug is a superhero. This is Kit. Kit is very clever. She is Dug’s best friend.')">🔊 Listen</button></div>
-      <div class="duo">
-        <div class="character"><div class="emoji">🐶🦸</div><h2>Dug</h2><p>This is Dug. Dug is also <b>Superdug</b>.<br>Superdug is a superhero.</p></div>
-        <div class="character"><div class="emoji">🐱🎀</div><h2>Kit</h2><p>This is Kit. Kit is very clever.<br>She is Dug’s best friend.</p></div>
+      <div class="grid" data-zone="phonics">
+        <button type="button" class="tile" data-word="fly"><svg class="ico"><use href="#fly"/></svg><div class="cap"><span class="bl">fl</span>y</div></button>
+        <button type="button" class="tile" data-word="flag"><svg class="ico"><use href="#flag"/></svg><div class="cap"><span class="bl">fl</span>ag</div></button>
+        <button type="button" class="tile" data-word="globe"><svg class="ico"><use href="#globe"/></svg><div class="cap"><span class="bl">gl</span>obe</div></button>
+        <button type="button" class="tile" data-word="glass"><svg class="ico"><use href="#glass"/></svg><div class="cap"><span class="bl">gl</span>ass</div></button>
+        <div class="quiz-row" style="grid-column:1/-1">
+          <button type="button" class="ghost" data-start="phonics">Point</button>
+          <button type="button" class="ghost" data-hear="1">Hear again</button>
+          <strong class="quiz-prompt">Tap Point, then tap the picture.</strong>
+        </div>
       </div>
-      <div class="question" data-answer="Dug" id="dugQuiz"><div class="q-title">Who is a superhero?</div><div class="options"><button class="option" data-v="Dug">Dug</button><button class="option" data-v="Kit">Kit</button></div></div>
-      <button class="check" onclick="checkSingle('dugQuiz','dugFb',5)">Check</button><div class="feedback" id="dugFb"></div>
-    </div></section>
-
-    <section class="slide"><div class="card">
-      <div class="slide-head"><div><span class="tag">Numbers 1–20</span><h2>Listen and repeat</h2><p class="sub">Click any number to hear it.</p></div></div>
-      <div class="number-board" id="numbers"></div>
-    </div></section>
-
-    <section class="slide"><div class="card">
-      <div class="slide-head"><div><span class="tag">Numbers • Exercise 3</span><h2>Complete the numbers</h2><p class="sub">Write the missing word.</p></div></div>
-      <div class="write-grid" id="numberWrite">
-        <label class="write-row"><span>1. o _ e</span><input class="text-input" data-answer="one"></label>
-        <label class="write-row"><span>2. _ w _</span><input class="text-input" data-answer="two"></label>
-        <label class="write-row"><span>3. t _ r _ _</span><input class="text-input" data-answer="three"></label>
-        <label class="write-row"><span>4. _ o _ r</span><input class="text-input" data-answer="four"></label>
-        <label class="write-row"><span>5. f _ _ e</span><input class="text-input" data-answer="five"></label>
-        <label class="write-row"><span>6. _ i _</span><input class="text-input" data-answer="six"></label>
-        <label class="write-row"><span>7. _ e _ e _</span><input class="text-input" data-answer="seven"></label>
-        <label class="write-row"><span>8. e i _ _ t</span><input class="text-input" data-answer="eight"></label>
-        <label class="write-row"><span>9. _ i n _</span><input class="text-input" data-answer="nine"></label>
-        <label class="write-row"><span>10. t _ _</span><input class="text-input" data-answer="ten"></label>
+      <div class="feedback" id="pointFb" role="status"></div>
+      <h2 style="margin-top:22px; font-size:28px">fl or gl?</h2>
+      <div id="blendQuiz">
+        <div class="q" data-answer="fl"><span>1 fly</span><button type="button" data-v="fl">fl</button><button type="button" data-v="gl">gl</button></div>
+        <div class="q" data-answer="fl"><span>2 flag</span><button type="button" data-v="fl">fl</button><button type="button" data-v="gl">gl</button></div>
+        <div class="q" data-answer="gl"><span>3 globe</span><button type="button" data-v="fl">fl</button><button type="button" data-v="gl">gl</button></div>
+        <div class="q" data-answer="gl"><span>4 glass</span><button type="button" data-v="fl">fl</button><button type="button" data-v="gl">gl</button></div>
       </div>
-      <button class="check" onclick="checkInputs('numberWrite','numberFb',15)">Check numbers</button><div class="feedback" id="numberFb"></div>
-    </div></section>
+      <button type="button" class="check" data-check="choices" data-root="blendQuiz" data-fb="blendFb" data-points="10">Check</button>
+      <div class="feedback" id="blendFb" role="status"></div>
+    </div>
+  </section>
 
-    <section class="slide"><div class="card">
-      <div class="slide-head"><div><span class="tag">Maths in English</span><h2>Write the answers in words</h2></div></div>
-      <div class="write-grid" id="mathWrite">
-        <label class="write-row"><span>1. six + six =</span><input class="text-input" data-answer="twelve"></label>
-        <label class="write-row"><span>2. eighteen − three =</span><input class="text-input" data-answer="fifteen"></label>
-        <label class="write-row"><span>3. two + eleven =</span><input class="text-input" data-answer="thirteen"></label>
-        <label class="write-row"><span>4. twenty − nine =</span><input class="text-input" data-answer="eleven"></label>
-        <label class="write-row"><span>5. seventeen − three =</span><input class="text-input" data-answer="fourteen"></label>
-        <label class="write-row"><span>6. two + seven =</span><input class="text-input" data-answer="nine"></label>
-        <label class="write-row"><span>7. five + two =</span><input class="text-input" data-answer="seven"></label>
-        <label class="write-row"><span>8. sixteen − twelve =</span><input class="text-input" data-answer="four"></label>
+  <section class="slide" data-group="Story" data-title="The Club">
+    <div class="card">
+      <div class="head">
+        <div>
+          <span class="tag">Story · B</span>
+          <h2>The Club</h2>
+          <p class="sub">Look and listen. Read along. Tap a picture to hear that part.</p>
+        </div>
+        <button type="button" class="listen" data-src="audio/Track17.mp3" data-name="Track 17 · The Club"><i class="disc">17</i><span class="when-off">Listen</span><span class="when-on">Pause</span></button>
       </div>
-      <button class="check" onclick="checkInputs('mathWrite','mathFb',15)">Check maths</button><div class="feedback" id="mathFb"></div>
-    </div></section>
-
-    <section class="slide"><div class="card">
-      <div class="slide-head"><div><span class="tag">Numbers 10–100</span><h2>Circle the correct number</h2></div><button class="speak" onclick="say('ten, twenty, thirty, forty, fifty, sixty, seventy, eighty, ninety, one hundred')">🔊 Repeat</button></div>
-      <div id="tensQuiz">
-        <div class="question" data-answer="40"><div class="q-title">1. forty</div><div class="options"><button class="option" data-v="14">14</button><button class="option" data-v="40">40</button></div></div>
-        <div class="question" data-answer="15"><div class="q-title">2. fifteen</div><div class="options"><button class="option" data-v="15">15</button><button class="option" data-v="50">50</button></div></div>
-        <div class="question" data-answer="13"><div class="q-title">3. thirteen</div><div class="options"><button class="option" data-v="13">13</button><button class="option" data-v="30">30</button></div></div>
-        <div class="question" data-answer="80"><div class="q-title">4. eighty</div><div class="options"><button class="option" data-v="18">18</button><button class="option" data-v="80">80</button></div></div>
-        <div class="question" data-answer="20"><div class="q-title">5. twenty</div><div class="options"><button class="option" data-v="12">12</button><button class="option" data-v="20">20</button></div></div>
-        <div class="question" data-answer="16"><div class="q-title">6. sixteen</div><div class="options"><button class="option" data-v="16">16</button><button class="option" data-v="60">60</button></div></div>
+      <div class="comic">
+        <article class="panel" data-say="The fly, the crab, and the crocodile are friends. This is their club.">
+          <span class="pn">1</span>
+          <div class="scene sky">
+            <div class="house"><div class="club">Club</div><div class="door"></div></div>
+            <svg class="actor" style="left:4px;bottom:8px"><use href="#fly"/></svg>
+            <svg class="actor" style="left:78px;bottom:4px;width:52px;height:52px"><use href="#crab"/></svg>
+            <svg class="actor" style="right:6px;bottom:6px"><use href="#croc"/></svg>
+          </div>
+          <p>The fly, the crab, and the crocodile are friends. This is <button type="button" class="sw" data-word="their">their</button> club.</p>
+        </article>
+        <article class="panel" data-say="Our club is a mess. We need to clean up! I can use the broom to sweep.">
+          <span class="pn">2</span>
+          <div class="scene roomg">
+            <div class="mini-clock">11:30</div>
+            <svg class="actor" style="left:8px;bottom:8px"><use href="#fly"/></svg>
+            <svg class="actor" style="left:70px;bottom:0"><use href="#broom"/></svg>
+            <svg class="actor" style="right:8px;bottom:6px"><use href="#croc"/></svg>
+          </div>
+          <div class="bub">Our club is a <button type="button" class="nw" data-word="mess">mess</button>. We need to <button type="button" class="sw" data-word="clean">clean</button> up!</div>
+          <div class="bub">I can use the broom to <button type="button" class="nw" data-word="sweep">sweep</button>.</div>
+        </article>
+        <article class="panel" data-say="I can put away the blanket and put up the flag. I can wipe the globe with a rag.">
+          <span class="pn">3</span>
+          <div class="scene roomg">
+            <div class="mini-clock">11:45</div>
+            <svg class="actor" style="left:6px;bottom:8px"><use href="#fly"/></svg>
+            <svg class="actor" style="left:62px;bottom:16px;width:48px;height:48px"><use href="#flagb"/></svg>
+            <svg class="actor" style="right:4px;bottom:4px"><use href="#globe"/></svg>
+          </div>
+          <div class="bub">I can put <button type="button" class="sw" data-word="away">away</button> the blanket and put up the flag.</div>
+          <div class="bub">I can <button type="button" class="nw" data-word="wipe">wipe</button> the globe with a rag.</div>
+        </article>
+        <article class="panel" data-say="Now our club is clean! Look at the clock. It's time to eat!">
+          <span class="pn">4</span>
+          <div class="scene roomg">
+            <div class="mini-clock">12:00</div>
+            <svg class="actor" style="left:8px;bottom:28px;width:48px;height:48px"><use href="#fly"/></svg>
+            <svg class="actor" style="left:58px;bottom:8px"><use href="#globe"/></svg>
+            <svg class="actor" style="right:8px;bottom:4px"><use href="#croc"/></svg>
+          </div>
+          <div class="bub">Now our club is <button type="button" class="sw" data-word="clean">clean</button>!</div>
+          <div class="bub">Look at the clock. <button type="button" class="sw" data-word="it's">It's</button> time to eat!</div>
+        </article>
       </div>
-      <button class="check" onclick="checkSingles('tensQuiz','tensFb',12)">Check numbers</button><div class="feedback" id="tensFb"></div>
-    </div></section>
-
-    <section class="slide"><div class="card">
-      <div class="slide-head"><div><span class="tag">Colours</span><h2>Listen and repeat</h2><p class="sub">Click a colour to hear its name.</p></div></div>
-      <div class="colour-grid">
-        <button class="colour dark" style="background:#161616" onclick="say('black')">black</button><button class="colour dark" style="background:#3178e8" onclick="say('blue')">blue</button>
-        <button class="colour dark" style="background:#8a532d" onclick="say('brown')">brown</button><button class="colour dark" style="background:#28a85c" onclick="say('green')">green</button>
-        <button class="colour" style="background:#bbb" onclick="say('grey')">grey</button><button class="colour dark" style="background:#f07822" onclick="say('orange')">orange</button>
-        <button class="colour" style="background:#ff8dba" onclick="say('pink')">pink</button><button class="colour dark" style="background:#8947b8" onclick="say('purple')">purple</button>
-        <button class="colour dark" style="background:#e53946" onclick="say('red')">red</button><button class="colour" style="background:#fff" onclick="say('white')">white</button>
-        <button class="colour" style="background:#ffe251" onclick="say('yellow')">yellow</button>
+      <div class="lex"><b>New words</b>
+        <button type="button" class="lexw" data-say="mess. A mess is not tidy.">mess</button>
+        <button type="button" class="lexw" data-say="sweep. Sweep means clean the floor with a broom.">sweep</button>
+        <button type="button" class="lexw" data-say="wipe. Wipe means clean with a rag.">wipe</button>
       </div>
-    </div></section>
-
-    <section class="slide"><div class="card">
-      <div class="slide-head"><div><span class="tag">Colours • Exercise 11</span><h2>Look and match</h2><p class="sub">Choose the colour of each thing.</p></div></div>
-      <div class="scene"><span>🐘🐘</span><span>🌺🌺</span><span>🦓🦓</span><span>🍊🍊</span><span>🍋🍋</span><span>🦩🦩</span></div>
-      <div id="colourQuiz">
-        <div class="question" data-answer="grey"><div class="q-title">1. The elephants are ...</div><div class="options"><button class="option" data-v="grey">grey</button><button class="option" data-v="blue">blue</button><button class="option" data-v="pink">pink</button></div></div>
-        <div class="question" data-answer="red"><div class="q-title">2. The flowers are ...</div><div class="options"><button class="option" data-v="green">green</button><button class="option" data-v="red">red</button><button class="option" data-v="white">white</button></div></div>
-        <div class="question" data-answer="black and white"><div class="q-title">3. The zebras are ...</div><div class="options"><button class="option" data-v="black and white">black and white</button><button class="option" data-v="purple">purple</button></div></div>
-        <div class="question" data-answer="orange"><div class="q-title">4. The oranges are ...</div><div class="options"><button class="option" data-v="yellow">yellow</button><button class="option" data-v="orange">orange</button></div></div>
-        <div class="question" data-answer="yellow"><div class="q-title">5. The lemons are ...</div><div class="options"><button class="option" data-v="yellow">yellow</button><button class="option" data-v="pink">pink</button></div></div>
-        <div class="question" data-answer="pink"><div class="q-title">6. The flamingoes are ...</div><div class="options"><button class="option" data-v="red">red</button><button class="option" data-v="pink">pink</button></div></div>
+      <div class="lex"><b>Sight words</b>
+        <button type="button" class="lexw swb" data-say="their">their</button>
+        <button type="button" class="lexw swb" data-say="clean">clean</button>
+        <button type="button" class="lexw swb" data-say="away">away</button>
+        <button type="button" class="lexw swb" data-say="it's">it's</button>
       </div>
-      <button class="check" onclick="checkSingles('colourQuiz','colourFb',15)">Check colours</button><div class="feedback" id="colourFb"></div>
-    </div></section>
+    </div>
+  </section>
 
-    <section class="slide"><div class="card">
-      <div class="slide-head"><div><span class="tag">Revision • Exercise 1</span><h2>Put the words in the correct order</h2><p class="sub">Make four sentences about Dug and Kit.</p></div><button class="speak" onclick="say('Dug is also Superdug. He is a superhero. Kit is Dug’s best friend. She is very clever.')">🔊 Listen</button></div>
-      <div class="write-grid" id="orderWrite">
-        <label class="write-row" style="display:block"><span>1. Superdug / also / Dug / is</span><input class="text-input" style="max-width:none;width:100%;margin-top:9px" data-answer="dug is also superdug"></label>
-        <label class="write-row" style="display:block"><span>2. is / superhero / He / a</span><input class="text-input" style="max-width:none;width:100%;margin-top:9px" data-answer="he is a superhero"></label>
-        <label class="write-row" style="display:block"><span>3. best / Kit / Dug’s / friend / is</span><input class="text-input" style="max-width:none;width:100%;margin-top:9px" data-answer="kit is dug’s best friend" data-alt="kit is dug's best friend"></label>
-        <label class="write-row" style="display:block"><span>4. clever / She / very / is</span><input class="text-input" style="max-width:none;width:100%;margin-top:9px" data-answer="she is very clever"></label>
+  <section class="slide" data-group="Story" data-title="Story words">
+    <div class="card" id="storyQuiz">
+      <div class="head"><div><span class="tag">Story</span><h2>Read and complete</h2><p class="sub">Tap a word, then tap the gap. Tap a gap again to clear it.</p></div></div>
+      <div class="look"><span class="bang">New</span> mess = not tidy · sweep = clean with a broom · wipe = clean with a rag</div>
+      <div class="bank" id="bankNew">
+        <button type="button" class="chip" data-w="mess">mess</button>
+        <button type="button" class="chip" data-w="sweep">sweep</button>
+        <button type="button" class="chip" data-w="wipe">wipe</button>
       </div>
-      <button class="check" onclick="checkInputs('orderWrite','orderFb',12)">Check sentences</button><div class="feedback" id="orderFb"></div>
-    </div></section>
-
-    <section class="slide"><div class="card">
-      <div class="slide-head"><div><span class="tag">Revision • Exercise 2</span><h2>Write the numbers</h2><p class="sub">Write each number using digits.</p></div></div>
-      <div class="write-grid" id="revisionNumbers">
-        <label class="write-row"><span>five</span><input class="text-input" inputmode="numeric" data-answer="5"></label>
-        <label class="write-row"><span>sixteen</span><input class="text-input" inputmode="numeric" data-answer="16"></label>
-        <label class="write-row"><span>twelve</span><input class="text-input" inputmode="numeric" data-answer="12"></label>
-        <label class="write-row"><span>one</span><input class="text-input" inputmode="numeric" data-answer="1"></label>
-        <label class="write-row"><span>ten</span><input class="text-input" inputmode="numeric" data-answer="10"></label>
-        <label class="write-row"><span>eight</span><input class="text-input" inputmode="numeric" data-answer="8"></label>
-        <label class="write-row"><span>four</span><input class="text-input" inputmode="numeric" data-answer="4"></label>
-        <label class="write-row"><span>eleven</span><input class="text-input" inputmode="numeric" data-answer="11"></label>
-        <label class="write-row"><span>seventeen</span><input class="text-input" inputmode="numeric" data-answer="17"></label>
-        <label class="write-row"><span>six</span><input class="text-input" inputmode="numeric" data-answer="6"></label>
-        <label class="write-row"><span>three</span><input class="text-input" inputmode="numeric" data-answer="3"></label>
-        <label class="write-row"><span>twenty</span><input class="text-input" inputmode="numeric" data-answer="20"></label>
-        <label class="write-row"><span>fourteen</span><input class="text-input" inputmode="numeric" data-answer="14"></label>
-        <label class="write-row"><span>eighteen</span><input class="text-input" inputmode="numeric" data-answer="18"></label>
-        <label class="write-row"><span>seven</span><input class="text-input" inputmode="numeric" data-answer="7"></label>
-        <label class="write-row"><span>nineteen</span><input class="text-input" inputmode="numeric" data-answer="19"></label>
-        <label class="write-row"><span>nine</span><input class="text-input" inputmode="numeric" data-answer="9"></label>
-        <label class="write-row"><span>thirteen</span><input class="text-input" inputmode="numeric" data-answer="13"></label>
-        <label class="write-row"><span>two</span><input class="text-input" inputmode="numeric" data-answer="2"></label>
-        <label class="write-row"><span>fifteen</span><input class="text-input" inputmode="numeric" data-answer="15"></label>
+      <p>1 Our club is a <button type="button" class="blank" data-answer="mess" aria-label="word"></button>.</p>
+      <p>2 The crab can <button type="button" class="blank" data-answer="sweep" aria-label="word"></button> with the broom.</p>
+      <p>3 The crocodile can <button type="button" class="blank" data-answer="wipe" aria-label="word"></button> the globe.</p>
+      <div class="bank" id="bankSight">
+        <button type="button" class="chip" data-w="their">their</button>
+        <button type="button" class="chip" data-w="clean">clean</button>
+        <button type="button" class="chip" data-w="away">away</button>
+        <button type="button" class="chip" data-w="it's">It's</button>
       </div>
-      <button class="check" onclick="checkInputs('revisionNumbers','revisionNumbersFb',20)">Check numbers</button><div class="feedback" id="revisionNumbersFb"></div>
-    </div></section>
+      <p>4 This is <button type="button" class="blank" data-answer="their" aria-label="word"></button> club.</p>
+      <p>5 Now our club is <button type="button" class="blank" data-answer="clean" aria-label="word"></button>.</p>
+      <p>6 Put the blanket <button type="button" class="blank" data-answer="away" aria-label="word"></button>.</p>
+      <p>7 <button type="button" class="blank" data-answer="it's" aria-label="word"></button> time to eat!</p>
+      <div class="q" data-answer="crab"><span>8 Who uses the broom?</span><button type="button" data-v="fly">the fly</button><button type="button" data-v="crab">the crab</button><button type="button" data-v="crocodile">the crocodile</button></div>
+      <div class="q" data-answer="fly"><span>9 Who puts up the flag?</span><button type="button" data-v="fly">the fly</button><button type="button" data-v="crab">the crab</button><button type="button" data-v="crocodile">the crocodile</button></div>
+      <div class="q" data-answer="crocodile"><span>10 Who wipes the globe?</span><button type="button" data-v="fly">the fly</button><button type="button" data-v="crab">the crab</button><button type="button" data-v="crocodile">the crocodile</button></div>
+      <div class="q" data-answer="12:00"><span>11 Picture 4. What time is it?</span><button type="button" data-v="11:30">11:30</button><button type="button" data-v="11:45">11:45</button><button type="button" data-v="12:00">12:00</button></div>
+      <button type="button" class="check" id="storyCheck">Check</button>
+      <div class="feedback" id="storyFb" role="status"></div>
+    </div>
+  </section>
 
-    <section class="slide"><div class="card">
-      <div class="slide-head"><div><span class="tag">Revision • Exercise 3</span><h2>Complete the missing numbers</h2><p class="sub">Continue each sequence.</p></div></div>
-      <div class="question"><div class="q-title">Even numbers</div><div class="write-grid" id="evenSequence">
-        <label class="write-row"><span>two, four, ...</span><input class="text-input" data-answer="six"></label>
-        <label class="write-row"><span>eight, ten, ...</span><input class="text-input" data-answer="twelve"></label>
-        <label class="write-row"><span>fourteen, ...</span><input class="text-input" data-answer="sixteen"></label>
-        <label class="write-row"><span>eighteen, ...</span><input class="text-input" data-answer="twenty"></label>
-      </div></div>
-      <div class="question"><div class="q-title">Odd numbers</div><div class="write-grid" id="oddSequence">
-        <label class="write-row"><span>one, three, ...</span><input class="text-input" data-answer="five"></label>
-        <label class="write-row"><span>seven, ...</span><input class="text-input" data-answer="nine"></label>
-        <label class="write-row"><span>eleven, ...</span><input class="text-input" data-answer="thirteen"></label>
-        <label class="write-row"><span>fifteen, ...</span><input class="text-input" data-answer="seventeen"></label>
-      </div></div>
-      <button class="check" onclick="checkTwoGroups()">Check sequences</button><div class="feedback" id="sequenceFb"></div>
-    </div></section>
-
-    <section class="slide"><div class="card">
-      <div class="slide-head"><div><span class="tag">Revision • Exercise 4</span><h2>Write the numbers</h2><p class="sub">Read the number words and write the digits.</p></div></div>
-      <div class="write-grid" id="bigNumbers">
-        <label class="write-row"><span>1. fifty-seven</span><input class="text-input" inputmode="numeric" data-answer="57"></label>
-        <label class="write-row"><span>2. twenty-three</span><input class="text-input" inputmode="numeric" data-answer="23"></label>
-        <label class="write-row"><span>3. seventy-one</span><input class="text-input" inputmode="numeric" data-answer="71"></label>
-        <label class="write-row"><span>4. thirteen</span><input class="text-input" inputmode="numeric" data-answer="13"></label>
-        <label class="write-row"><span>5. sixty-eight</span><input class="text-input" inputmode="numeric" data-answer="68"></label>
-        <label class="write-row"><span>6. nineteen</span><input class="text-input" inputmode="numeric" data-answer="19"></label>
-        <label class="write-row"><span>7. thirty</span><input class="text-input" inputmode="numeric" data-answer="30"></label>
-        <label class="write-row"><span>8. eighty-six</span><input class="text-input" inputmode="numeric" data-answer="86"></label>
-        <label class="write-row"><span>9. forty-two</span><input class="text-input" inputmode="numeric" data-answer="42"></label>
-        <label class="write-row"><span>10. a hundred</span><input class="text-input" inputmode="numeric" data-answer="100"></label>
+  <section class="slide" data-group="Classroom" data-title="1 · In my bag">
+    <div class="card">
+      <div class="head">
+        <div>
+          <span class="tag">0.3 · In the classroom</span>
+          <h2>Listen and repeat</h2>
+          <p class="sub">Name the objects in Jen’s school bag. The card lights up while you listen.</p>
+        </div>
+        <button type="button" class="listen" data-src="audio/1_12.mp3" data-name="1.12 · In my bag"><i class="disc">1.12</i><span class="when-off">Listen</span><span class="when-on">Pause</span></button>
       </div>
-      <button class="check" onclick="checkInputs('bigNumbers','bigNumbersFb',15)">Check numbers</button><div class="feedback" id="bigNumbersFb"></div>
-    </div></section>
-
-    <section class="slide"><div class="card">
-      <div class="slide-head"><div><span class="tag">Revision • Exercise 5</span><h2>Match the colours to the words</h2><p class="sub">Choose the English name for every colour.</p></div></div>
-      <div class="write-grid" id="colourMatch">
-        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#168fd5"></i><span>1</span><select class="text-input" data-answer="blue"><option></option><option>blue</option><option>green</option><option>grey</option></select></label>
-        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#202124"></i><span>2</span><select class="text-input" data-answer="black"><option></option><option>black</option><option>brown</option><option>purple</option></select></label>
-        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#ffbd20"></i><span>3</span><select class="text-input" data-answer="yellow"><option></option><option>yellow</option><option>orange</option><option>red</option></select></label>
-        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#fff;border:1px solid #bbb"></i><span>4</span><select class="text-input" data-answer="white"><option></option><option>white</option><option>grey</option><option>pink</option></select></label>
-        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#f51f68"></i><span>5</span><select class="text-input" data-answer="pink"><option></option><option>red</option><option>pink</option><option>purple</option></select></label>
-        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#a31f73"></i><span>6</span><select class="text-input" data-answer="purple"><option></option><option>purple</option><option>pink</option><option>brown</option></select></label>
-        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#58bd00"></i><span>7</span><select class="text-input" data-answer="green"><option></option><option>green</option><option>blue</option><option>yellow</option></select></label>
-        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#a95722"></i><span>8</span><select class="text-input" data-answer="brown"><option></option><option>brown</option><option>orange</option><option>black</option></select></label>
-        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#777"></i><span>9</span><select class="text-input" data-answer="grey"><option></option><option>white</option><option>grey</option><option>black</option></select></label>
-        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#ff641f"></i><span>10</span><select class="text-input" data-answer="orange"><option></option><option>orange</option><option>red</option><option>yellow</option></select></label>
-        <label class="write-row"><i style="width:42px;height:28px;border-radius:7px;background:#f12626"></i><span>11</span><select class="text-input" data-answer="red"><option></option><option>red</option><option>orange</option><option>pink</option></select></label>
+      <p class="sub">I can talk about classroom objects and understand classroom instructions.</p>
+      <div class="grid" data-zone="bag" style="margin-top:12px">
+        <button type="button" class="vcard" data-word="book"><svg class="ico" style="color:#1f8a4c"><use href="#book"/></svg><div class="cap">book</div></button>
+        <button type="button" class="vcard" data-word="coloured pencil"><svg class="ico" style="color:#2f7cf6"><use href="#pencil"/></svg><div class="cap">coloured pencil</div></button>
+        <button type="button" class="vcard" data-word="notebook"><svg class="ico" style="color:#7b4dff"><use href="#notebook"/></svg><div class="cap">notebook</div></button>
+        <button type="button" class="vcard" data-word="pen"><svg class="ico" style="color:#222"><use href="#pen"/></svg><div class="cap">pen</div></button>
+        <button type="button" class="vcard" data-word="pencil"><svg class="ico" style="color:#f0c14a"><use href="#pencil"/></svg><div class="cap">pencil</div></button>
+        <button type="button" class="vcard" data-word="pencil case"><span class="shut-case" style="display:block;margin:14px auto;width:110px;height:48px"></span><div class="cap">pencil case</div></button>
+        <button type="button" class="vcard" data-word="pencil sharpener"><svg class="ico" style="color:#ffd000"><use href="#sharpener"/></svg><div class="cap">pencil sharpener</div></button>
+        <button type="button" class="vcard" data-word="rubber"><svg class="ico"><use href="#rubber"/></svg><div class="cap">rubber</div></button>
+        <button type="button" class="vcard" data-word="ruler"><svg class="ico"><use href="#ruler"/></svg><div class="cap">ruler</div></button>
+        <button type="button" class="vcard" data-word="sandwich"><svg class="ico"><use href="#sandwich"/></svg><div class="cap">sandwich</div></button>
+        <button type="button" class="vcard" data-word="scissors"><svg class="ico" style="color:#f5b400"><use href="#scissors"/></svg><div class="cap">scissors</div></button>
+        <div class="quiz-row" style="grid-column:1/-1">
+          <button type="button" class="ghost" data-start="bag">Point</button>
+          <button type="button" class="ghost" data-hear="1">Hear again</button>
+          <strong class="quiz-prompt">Tap a card to say the word, or press Point.</strong>
+        </div>
       </div>
-      <button class="check" onclick="checkInputs('colourMatch','colourMatchFb',18)">Check colours</button><div class="feedback" id="colourMatchFb"></div>
-    </div></section>
+      <div class="feedback" id="bagFb" role="status"></div>
+    </div>
+  </section>
 
-    <section class="slide"><div class="card">
-      <div class="slide-head"><div><span class="tag">Revision • Exercise 6</span><h2>Look and write the colours</h2><p class="sub">Read each coloured number word, then write its colour.</p></div></div>
-      <div style="background:#fff;border:2px solid #e5e8f1;border-radius:18px;padding:18px;text-align:center;font:700 25px Fredoka;line-height:1.7;margin-bottom:16px">
-        <span style="color:#777">eighteen</span>　<span style="color:#965126">ninety</span>　<span style="color:#158bd1">thirty</span>　<span style="color:#191919">sixteen</span><br>
-        <span style="color:#ff691f">fourteen</span>　<span style="color:#e6af00">seventeen</span>　<span style="color:#bbb;text-shadow:0 0 1px #555">eighty</span><br>
-        <span style="color:#ef3180">nineteen</span>　<span style="color:#e32d35">thirteen</span>　<span style="color:#48b80b">fifty</span>
+  <section class="slide" data-group="Classroom" data-title="2 · a or an">
+    <div class="card">
+      <div class="head"><div><span class="tag">0.3 · 2</span><h2>Write a or an</h2><p class="sub">Use <b>an</b> before a, e, i, o, u.</p></div></div>
+      <div class="look"><span class="bang">LOOK!</span> a book, a pencil<br>an apple, an umbrella</div>
+      <div class="writes" id="aanWrite">
+        <div class="exline">1 <b>a</b> notebook <span class="eg">Example</span></div>
+        <div class="exline">2 <b>an</b> apple <span class="eg">Example</span></div>
+        <label>3 <input type="text" maxlength="3" spellcheck="false" autocomplete="off" placeholder="..." aria-label="article for pencil" data-answer="a"> pencil</label>
+        <label>4 <input type="text" maxlength="3" spellcheck="false" autocomplete="off" placeholder="..." aria-label="article for egg" data-answer="an"> egg</label>
+        <label>5 <input type="text" maxlength="3" spellcheck="false" autocomplete="off" placeholder="..." aria-label="article for ruler" data-answer="a"> ruler</label>
+        <label>6 <input type="text" maxlength="3" spellcheck="false" autocomplete="off" placeholder="..." aria-label="article for elephant" data-answer="an"> elephant</label>
+        <label>7 <input type="text" maxlength="3" spellcheck="false" autocomplete="off" placeholder="..." aria-label="article for book" data-answer="a"> book</label>
+        <label>8 <input type="text" maxlength="3" spellcheck="false" autocomplete="off" placeholder="..." aria-label="article for orange" data-answer="an"> orange</label>
       </div>
-      <div class="write-grid" id="readColours">
-        <label class="write-row"><span>1. 14</span><input class="text-input" data-answer="orange"></label>
-        <label class="write-row"><span>2. 30</span><input class="text-input" data-answer="blue"></label>
-        <label class="write-row"><span>3. 17</span><input class="text-input" data-answer="yellow"></label>
-        <label class="write-row"><span>4. 90</span><input class="text-input" data-answer="brown"></label>
-        <label class="write-row"><span>5. 13</span><input class="text-input" data-answer="red"></label>
-        <label class="write-row"><span>6. 18</span><input class="text-input" data-answer="grey" data-alt="gray"></label>
-        <label class="write-row"><span>7. 19</span><input class="text-input" data-answer="pink"></label>
-        <label class="write-row"><span>8. 16</span><input class="text-input" data-answer="black"></label>
-        <label class="write-row"><span>9. 80</span><input class="text-input" data-answer="white"></label>
-        <label class="write-row"><span>10. 50</span><input class="text-input" data-answer="green"></label>
-      </div>
-      <button class="check" onclick="checkInputs('readColours','readColoursFb',15)">Check colours</button><div class="feedback" id="readColoursFb"></div>
-    </div></section>
+      <button type="button" class="check" data-check="text" data-root="aanWrite" data-fb="aanFb" data-points="10">Check</button>
+      <div class="feedback" id="aanFb" role="status"></div>
+    </div>
+  </section>
 
-    <section class="slide"><div class="card hero">
-      <div class="hero-art">🏆🌟🎉</div><h1>Mission complete!</h1>
-      <p>You practised phonics, reading, numbers, maths and colours. Fantastic work!</p>
-      <div style="font:700 34px Fredoka;color:var(--purple);margin:18px">Your score: <span id="finalScore">0</span> ⭐</div>
-      <button class="start" onclick="go(0)">Play again</button>
-    </div></section>
-  </main>
-  <footer>
-    <button class="nav" id="prev" onclick="go(current-1)">◀ Back</button>
-    <div class="counter"><div class="dots" id="dots"></div><span id="counter">1 / 13</span></div>
-    <button class="nav" id="next" onclick="go(current+1)">Next ▶</button>
-  </footer>
-  <script>
-    const slides=[...document.querySelectorAll('.slide')], words=['one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
-    let current=0,score=0,seconds=3600,timer=null,awarded=new Set();
-    const dots=document.getElementById('dots');
-    slides.forEach((_,i)=>{const d=document.createElement('i');d.className='dot';d.onclick=()=>go(i);dots.appendChild(d)});
-    document.getElementById('numbers').innerHTML=words.map((w,i)=>`<button class="num" onclick="say('${w}')"><b>${i+1}</b>${w}</button>`).join('');
-    document.querySelectorAll('.options').forEach(group=>group.addEventListener('click',e=>{const b=e.target.closest('.option');if(!b)return;const q=b.closest('.question');if(q.dataset.answer.includes(','))b.classList.toggle('selected');else{group.querySelectorAll('.option').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')}}));
-    function go(n){if(n<0||n>=slides.length)return;slides[current].classList.remove('active');current=n;slides[current].classList.add('active');document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===current));document.getElementById('counter').textContent=`${current+1} / ${slides.length}`;document.getElementById('progress').style.width=`${current/(slides.length-1)*100}%`;document.getElementById('prev').disabled=current===0;document.getElementById('next').disabled=current===slides.length-1;if(current===slides.length-1)document.getElementById('finalScore').textContent=score;window.scrollTo({top:0,behavior:'smooth'})}
-    function say(text,rate=.88){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-GB';u.rate=rate;const v=speechSynthesis.getVoices().find(x=>x.lang.startsWith('en'));if(v)u.voice=v;speechSynthesis.speak(u)}
-    function reward(key,points){if(!awarded.has(key)){awarded.add(key);score+=points;document.getElementById('score').textContent=score}}
-    function showFb(id,good,text){const f=document.getElementById(id);f.className=`feedback show ${good?'ok':'no'}`;f.textContent=text}
-    function checkSingle(id,fb,points){const q=document.getElementById(id),b=q.querySelector('.selected'),ok=b&&b.dataset.v===q.dataset.answer;q.querySelectorAll('.option').forEach(x=>x.classList.toggle(x.dataset.v===q.dataset.answer?'correct':'wrong',x===b||x.dataset.v===q.dataset.answer));showFb(fb,ok,ok?'Excellent! Correct answer! 🎉':'Try again and read the text carefully.');if(ok)reward(id,points)}
-    function checkSingles(id,fb,points){const qs=[...document.querySelectorAll(`#${id} .question`)];let good=0;qs.forEach(q=>{const b=q.querySelector('.selected'),ok=b&&b.dataset.v===q.dataset.answer;if(ok)good++;q.querySelectorAll('.option').forEach(x=>{x.classList.remove('correct','wrong');if(x.dataset.v===q.dataset.answer)x.classList.add('correct');else if(x===b)x.classList.add('wrong')})});showFb(fb,good===qs.length,`${good} of ${qs.length} correct${good===qs.length?' — brilliant! 🌟':'. Fix the highlighted answers.'}`);if(good===qs.length)reward(id,points)}
-    function checkMulti(id,fb,points){const qs=[...document.querySelectorAll(`#${id} .question`)];let good=0;qs.forEach(q=>{const ans=q.dataset.answer.split(',').sort().join(','),sel=[...q.querySelectorAll('.selected')].map(x=>x.dataset.v).sort().join(','),ok=ans===sel;if(ok)good++;q.querySelectorAll('.option').forEach(x=>{x.classList.remove('correct','wrong');if(q.dataset.answer.split(',').includes(x.dataset.v))x.classList.add('correct');else if(x.classList.contains('selected'))x.classList.add('wrong')})});showFb(fb,good===qs.length,`${good} of ${qs.length} correct${good===qs.length?' — all sounds match! 🎧':'. Listen to the first sounds again.'}`);if(good===qs.length)reward(id,points)}
-    function checkInputs(id,fb,points){const ins=[...document.querySelectorAll(`#${id} input, #${id} select`)];let good=0;ins.forEach(x=>{const value=x.value.trim().toLowerCase().replace(/[.!?]+$/,'');const ok=value===x.dataset.answer||value===x.dataset.alt;x.className=`text-input ${ok?'correct':'wrong'}`;if(ok)good++});showFb(fb,good===ins.length,`${good} of ${ins.length} correct${good===ins.length?' — amazing work! ✨':'. Check the red boxes and try again.'}`);if(good===ins.length)reward(id,points)}
-    function checkTwoGroups(){const ins=[...document.querySelectorAll('#evenSequence input, #oddSequence input')];let good=0;ins.forEach(x=>{const ok=x.value.trim().toLowerCase()===x.dataset.answer;x.className=`text-input ${ok?'correct':'wrong'}`;if(ok)good++});showFb('sequenceFb',good===ins.length,`${good} of ${ins.length} correct${good===ins.length?' — both sequences are complete! ✨':'. Follow the pattern: add two each time.'}`);if(good===ins.length)reward('numberSequences',15)}
-    function toggleTimer(){const b=document.getElementById('timerBtn');if(timer){clearInterval(timer);timer=null;b.textContent='▶'}else{b.textContent='⏸';timer=setInterval(()=>{if(seconds<=0){clearInterval(timer);timer=null;b.textContent='▶';return}seconds--;const m=Math.floor(seconds/60),s=seconds%60;document.getElementById('time').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`},1000)}}
-    document.addEventListener('keydown',e=>{if(e.target.matches('input'))return;if(e.key==='ArrowRight')go(current+1);if(e.key==='ArrowLeft')go(current-1)});
-    go(0);
-  </script>
+  <section class="slide" data-group="Classroom" data-title="3 · How many?">
+    <div class="card">
+      <div class="head"><div><span class="tag">0.3 · 3</span><h2>How many are in Jen’s bag?</h2><p class="sub">Look at the picture. Write the number, like the example.</p></div></div>
+      <div class="bag-scene" aria-label="Jen’s school bag and the objects around it">
+        <div class="items">
+          <div class="open-case" title="coloured pencils">
+            <div class="prow">
+              <svg class="ico" style="color:#e23b4a"><use href="#pencil"/></svg>
+              <svg class="ico" style="color:#ff8c1a"><use href="#pencil"/></svg>
+              <svg class="ico" style="color:#f2c200"><use href="#pencil"/></svg>
+              <svg class="ico" style="color:#7ac943"><use href="#pencil"/></svg>
+              <svg class="ico" style="color:#12a36a"><use href="#pencil"/></svg>
+              <svg class="ico" style="color:#14b8c4"><use href="#pencil"/></svg>
+            </div>
+            <div class="prow">
+              <svg class="ico" style="color:#2f7cf6"><use href="#pencil"/></svg>
+              <svg class="ico" style="color:#5b4dff"><use href="#pencil"/></svg>
+              <svg class="ico" style="color:#b44dff"><use href="#pencil"/></svg>
+              <svg class="ico" style="color:#ff4d88"><use href="#pencil"/></svg>
+              <svg class="ico" style="color:#c47a3a"><use href="#pencil"/></svg>
+              <svg class="ico" style="color:#3a342c"><use href="#pencil"/></svg>
+            </div>
+          </div>
+          <div class="shut-case" title="pencil case"></div>
+          <div class="group" title="notebooks">
+            <svg class="ico nb" style="color:#7b4dff"><use href="#notebook"/></svg>
+            <svg class="ico nb" style="color:#e23b6a"><use href="#notebook"/></svg>
+            <svg class="ico nb" style="color:#ff8a1a"><use href="#notebook"/></svg>
+          </div>
+          <svg class="ico sm" style="color:#1f8a4c" title="book"><use href="#book"/></svg>
+          <svg class="ico sm" title="ruler"><use href="#ruler"/></svg>
+          <svg class="ico sm" style="color:#f5b400" title="scissors"><use href="#scissors"/></svg>
+          <svg class="ico sm" style="color:#222" title="pen"><use href="#pen"/></svg>
+          <svg class="ico sm" style="color:#f0c14a" title="pencil"><use href="#pencil"/></svg>
+          <svg class="ico sm" title="sandwich"><use href="#sandwich"/></svg>
+          <div class="group" title="pencil sharpeners">
+            <svg class="ico sm" style="color:#ff5fa2"><use href="#sharpener"/></svg>
+            <svg class="ico sm" style="color:#3ecf8e"><use href="#sharpener"/></svg>
+          </div>
+          <div class="group" title="rubbers">
+            <svg class="ico sm" style="color:#3ecf8e"><use href="#eraser"/></svg>
+            <svg class="ico sm" style="color:#ff7ab6"><use href="#eraser"/></svg>
+          </div>
+        </div>
+        <div class="pack"><span>Jen’s bag</span></div>
+      </div>
+      <div class="writes" id="howMany" style="margin-top:14px">
+        <div class="exline">1 notebook? <b>Three notebooks.</b> <span class="eg">Example</span></div>
+        <label>2 pencil sharpener? <input type="text" spellcheck="false" autocomplete="off" placeholder="..." aria-label="how many pencil sharpeners" data-num="2"></label>
+        <label>3 rubber? <input type="text" spellcheck="false" autocomplete="off" placeholder="..." aria-label="how many rubbers" data-num="2"></label>
+        <label>4 sandwich? <input type="text" spellcheck="false" autocomplete="off" placeholder="..." aria-label="how many sandwiches" data-num="1"></label>
+        <label>5 coloured pencil? <input type="text" spellcheck="false" autocomplete="off" placeholder="..." aria-label="how many coloured pencils" data-num="12"></label>
+        <label>6 pencil case? <input type="text" spellcheck="false" autocomplete="off" placeholder="..." aria-label="how many pencil cases" data-num="2"></label>
+      </div>
+      <button type="button" class="check" data-check="num" data-root="howMany" data-fb="howFb" data-points="10">Check</button>
+      <div class="feedback" id="howFb" role="status"></div>
+    </div>
+  </section>
+
+  <section class="slide" data-group="Classroom" data-title="4 · Classroom objects">
+    <div class="card">
+      <div class="head">
+        <div>
+          <span class="tag">0.3 · 4</span>
+          <h2>Listen and repeat</h2>
+          <p class="sub">Check the meaning. Tap a word, then tap its meaning.</p>
+        </div>
+        <button type="button" class="listen" data-src="audio/1_13.mp3" data-name="1.13 · Classroom objects"><i class="disc">1.13</i><span class="when-off">Listen</span><span class="when-on">Pause</span></button>
+      </div>
+      <div class="grid" id="classCards" data-zone="words">
+        <button type="button" class="vcard" data-word="bin"><svg class="ico"><use href="#bin"/></svg><div class="cap">bin</div></button>
+        <button type="button" class="vcard" data-word="board"><svg class="ico"><use href="#board"/></svg><div class="cap">board</div></button>
+        <button type="button" class="vcard" data-word="chair"><svg class="ico"><use href="#chair"/></svg><div class="cap">chair</div></button>
+        <button type="button" class="vcard" data-word="clock"><svg class="ico"><use href="#clock"/></svg><div class="cap">clock</div></button>
+        <button type="button" class="vcard" data-word="desk"><svg class="ico"><use href="#desk"/></svg><div class="cap">desk</div></button>
+      </div>
+      <div class="duo" id="dict" style="margin-top:16px">
+        <div class="dwords">
+          <button type="button" data-w="bin">bin</button>
+          <button type="button" data-w="board">board</button>
+          <button type="button" data-w="chair">chair</button>
+          <button type="button" data-w="clock">clock</button>
+          <button type="button" data-w="desk">desk</button>
+        </div>
+        <div class="dmeans" id="dmeans">
+          <button type="button" data-w="bin">You put rubbish in it.</button>
+          <button type="button" data-w="board">The teacher writes on it.</button>
+          <button type="button" data-w="chair">You sit on it.</button>
+          <button type="button" data-w="clock">It tells the time.</button>
+          <button type="button" data-w="desk">You put your books on it.</button>
+        </div>
+      </div>
+      <div class="feedback" id="dictFb" role="status"></div>
+    </div>
+  </section>
+
+  <section class="slide" data-group="Classroom" data-title="5 · How many here?">
+    <div class="card">
+      <div class="head"><div><span class="tag">0.3 · 5</span><h2>Point and count</h2><p class="sub">Find the classroom objects. How many are there?</p></div></div>
+      <div class="classroom" data-zone="room">
+        <div class="wall">
+          <button type="button" class="obj" data-word="board" aria-label="board"><svg class="ico" style="width:160px;height:100px"><use href="#board"/></svg></button>
+          <button type="button" class="obj" data-word="clock" aria-label="clock"><svg class="ico"><use href="#clock"/></svg></button>
+        </div>
+        <div class="floor">
+          <div class="pair">
+            <button type="button" class="obj" data-word="desk" aria-label="desk"><svg class="ico" style="width:92px"><use href="#desk"/></svg></button>
+            <button type="button" class="obj" data-word="chair" aria-label="chair"><svg class="ico"><use href="#chair"/></svg></button>
+            <button type="button" class="obj" data-word="chair" aria-label="chair"><svg class="ico"><use href="#chair"/></svg></button>
+          </div>
+          <div class="pair">
+            <button type="button" class="obj" data-word="desk" aria-label="desk"><svg class="ico" style="width:92px"><use href="#desk"/></svg></button>
+            <button type="button" class="obj" data-word="chair" aria-label="chair"><svg class="ico"><use href="#chair"/></svg></button>
+            <button type="button" class="obj" data-word="chair" aria-label="chair"><svg class="ico"><use href="#chair"/></svg></button>
+          </div>
+          <button type="button" class="obj" data-word="bin" aria-label="bin"><svg class="ico"><use href="#bin"/></svg></button>
+        </div>
+        <div class="quiz-row">
+          <button type="button" class="ghost" data-start="room">Point</button>
+          <button type="button" class="ghost" data-hear="1">Hear again</button>
+          <strong class="quiz-prompt">Press Point and tap the object.</strong>
+        </div>
+      </div>
+      <div class="feedback" id="roomPointFb" role="status"></div>
+      <div class="writes" id="roomCount" style="margin-top:14px">
+        <label>board <input type="text" spellcheck="false" autocomplete="off" placeholder="..." aria-label="how many boards" data-num="1"></label>
+        <label>clock <input type="text" spellcheck="false" autocomplete="off" placeholder="..." aria-label="how many clocks" data-num="1"></label>
+        <label>bin <input type="text" spellcheck="false" autocomplete="off" placeholder="..." aria-label="how many bins" data-num="1"></label>
+        <label>desk <input type="text" spellcheck="false" autocomplete="off" placeholder="..." aria-label="how many desks" data-num="2"></label>
+        <label>chair <input type="text" spellcheck="false" autocomplete="off" placeholder="..." aria-label="how many chairs" data-num="4"></label>
+      </div>
+      <button type="button" class="check" data-check="num" data-root="roomCount" data-fb="roomFb" data-points="10">Check numbers</button>
+      <div class="feedback" id="roomFb" role="status"></div>
+    </div>
+  </section>
+
+  <section class="slide" data-group="Practice" data-title="Circle the word">
+    <div class="card">
+      <div class="head"><div><span class="tag">Practice · 1</span><h2>Circle the correct answer</h2></div></div>
+      <div class="picgrid" id="picQuiz">
+        <figure>
+          <svg class="ico" style="color:#ffd000"><use href="#sharpener"/></svg>
+          <div class="q example"><button type="button" disabled class="selected good">pencil sharpener</button><button type="button" disabled>pencil case</button></div>
+          <span class="eg">Example</span>
+        </figure>
+        <figure>
+          <svg class="ico"><use href="#rubber"/></svg>
+          <div class="q" data-answer="rubber"><button type="button" data-v="rubber">rubber</button><button type="button" data-v="pen">pen</button></div>
+        </figure>
+        <figure>
+          <svg class="ico"><use href="#ruler"/></svg>
+          <div class="q" data-answer="ruler"><button type="button" data-v="notebook">notebook</button><button type="button" data-v="ruler">ruler</button></div>
+        </figure>
+        <figure>
+          <svg class="ico" style="color:#f5b400"><use href="#scissors"/></svg>
+          <div class="q" data-answer="scissors"><button type="button" data-v="pencil">pencil</button><button type="button" data-v="scissors">scissors</button></div>
+        </figure>
+        <figure>
+          <svg class="ico" style="color:#d23b3b"><use href="#book"/></svg>
+          <div class="q" data-answer="book"><button type="button" data-v="book">book</button><button type="button" data-v="sandwich">sandwich</button></div>
+        </figure>
+        <figure>
+          <div class="scribble"></div>
+          <svg class="ico" style="color:#2f7cf6"><use href="#pencil"/></svg>
+          <div class="q" data-answer="coloured pencil"><button type="button" data-v="coloured pencil">coloured pencil</button><button type="button" data-v="pencil case">pencil case</button></div>
+        </figure>
+      </div>
+      <button type="button" class="check" data-check="choices" data-root="picQuiz" data-fb="picFb" data-points="10">Check</button>
+      <div class="feedback" id="picFb" role="status"></div>
+    </div>
+  </section>
+
+  <section class="slide" data-group="Practice" data-title="Circle a or an">
+    <div class="card">
+      <div class="head"><div><span class="tag">Practice · 2</span><h2>Circle the correct word</h2></div></div>
+      <div class="look"><span class="bang">LOOK!</span> a book, a pencil &nbsp; an apple, an umbrella</div>
+      <div id="aanCircle">
+        <div class="q example"><span>1</span><button type="button" disabled>a</button><button type="button" disabled class="selected good">an</button><span>apple</span><span class="eg">Example</span></div>
+        <div class="q" data-answer="a"><span>2</span><button type="button" data-v="a">a</button><button type="button" data-v="an">an</button><span>pencil</span></div>
+        <div class="q" data-answer="a"><span>3</span><button type="button" data-v="a">a</button><button type="button" data-v="an">an</button><span>sandwich</span></div>
+        <div class="q" data-answer="a"><span>4</span><button type="button" data-v="a">a</button><button type="button" data-v="an">an</button><span>notebook</span></div>
+        <div class="q" data-answer="an"><span>5</span><button type="button" data-v="a">a</button><button type="button" data-v="an">an</button><span>egg</span></div>
+        <div class="q" data-answer="a"><span>6</span><button type="button" data-v="a">a</button><button type="button" data-v="an">an</button><span>box</span></div>
+      </div>
+      <button type="button" class="check" data-check="choices" data-root="aanCircle" data-fb="aanCircleFb" data-points="10">Check</button>
+      <div class="feedback" id="aanCircleFb" role="status"></div>
+    </div>
+  </section>
+
+  <section class="slide" data-group="Practice" data-title="Plurals">
+    <div class="card">
+      <div class="head"><div><span class="tag">Practice · 3</span><h2>Write the plural</h2><p class="sub">Use the words from the a / an exercise.</p></div></div>
+      <div class="look">
+        <span class="bang">LOOK!</span>
+        <p>a pencil → six pencil<b>s</b> &nbsp; an orange → two orange<b>s</b></p>
+        <p>a box → four box<b>es</b> &nbsp; a sandwich → two sandwich<b>es</b></p>
+      </div>
+      <p class="sub">Words: 1 apple · 2 pencil · 3 sandwich · 4 notebook · 5 egg · 6 box</p>
+      <div class="writes" id="pluralWrite">
+        <div class="exline">1 two <b>apples</b> <span class="eg">Example</span></div>
+        <label>2 three <input type="text" spellcheck="false" autocomplete="off" placeholder="..." aria-label="plural of pencil" data-answer="pencils"></label>
+        <label>3 five <input type="text" spellcheck="false" autocomplete="off" placeholder="..." aria-label="plural of sandwich" data-answer="sandwiches"></label>
+        <label>4 seven <input type="text" spellcheck="false" autocomplete="off" placeholder="..." aria-label="plural of notebook" data-answer="notebooks"></label>
+        <label>5 four <input type="text" spellcheck="false" autocomplete="off" placeholder="..." aria-label="plural of egg" data-answer="eggs"></label>
+        <label>6 six <input type="text" spellcheck="false" autocomplete="off" placeholder="..." aria-label="plural of box" data-answer="boxes"></label>
+      </div>
+      <button type="button" class="check" data-check="text" data-root="pluralWrite" data-fb="pluralFb" data-points="10">Check</button>
+      <div class="feedback" id="pluralFb" role="status"></div>
+    </div>
+  </section>
+
+  <section class="slide" data-group="Practice" data-title="Word snake">
+    <div class="card">
+      <div class="head"><div><span class="tag">Practice · 4</span><h2>Find five words</h2><p class="sub">Bin is circled. Tap the first letter of a word, then the last letter.</p></div></div>
+      <div class="snake-wrap" id="snake"></div>
+      <p class="sub" style="margin-top:10px">Found <b id="snakeCount">1 / 5</b></p>
+      <div class="feedback" id="snakeFb" role="status"></div>
+    </div>
+  </section>
+
+  <section class="slide" data-group="Practice" data-title="It's or They're">
+    <div class="card">
+      <div class="head"><div><span class="tag">Practice · 5</span><h2>Complete with It’s or They’re</h2></div></div>
+      <div class="look"><span class="bang">LOOK!</span> It’s a pencil. &nbsp; They’re pencils.</div>
+      <div id="itsQuiz">
+        <div class="q example"><span>1</span><button type="button" disabled class="selected good">It’s</button><button type="button" disabled>They’re</button><span>a bin.</span><span class="eg">Example</span></div>
+        <div class="q" data-answer="they're"><span>2</span><button type="button" data-v="it's">It’s</button><button type="button" data-v="they're">They’re</button><span>clocks.</span></div>
+        <div class="q" data-answer="it's"><span>3</span><button type="button" data-v="it's">It’s</button><button type="button" data-v="they're">They’re</button><span>a board.</span></div>
+        <div class="q" data-answer="it's"><span>4</span><button type="button" data-v="it's">It’s</button><button type="button" data-v="they're">They’re</button><span>a desk.</span></div>
+        <div class="q" data-answer="they're"><span>5</span><button type="button" data-v="it's">It’s</button><button type="button" data-v="they're">They’re</button><span>chairs.</span></div>
+        <div class="q" data-answer="they're"><span>6</span><button type="button" data-v="it's">It’s</button><button type="button" data-v="they're">They’re</button><span>bins.</span></div>
+      </div>
+      <button type="button" class="check" data-check="choices" data-root="itsQuiz" data-fb="itsFb" data-points="10">Check</button>
+      <div class="feedback" id="itsFb" role="status"></div>
+    </div>
+  </section>
+
+  <section class="slide" data-title="Done">
+    <div class="card hero">
+      <h1>You did it!</h1>
+      <p class="sub">Score</p>
+      <p style="font-family:Fredoka,sans-serif; font-size:54px; margin:8px 0">★ <span id="finalScore">0</span></p>
+      <div class="doors">
+        <button type="button" class="door-card" data-jump="1"><h2>Sounds again</h2></button>
+        <button type="button" class="door-card story" data-jump="3"><h2>Read the story</h2></button>
+        <button type="button" class="door-card class" data-jump="5"><h2>Classroom again</h2></button>
+      </div>
+      <button type="button" class="check" onclick="location.reload()">Start again</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <button type="button" class="nav" id="prev">Back</button>
+  <div class="counter"><span id="here">Home</span><b id="counter">1 / 16</b></div>
+  <button type="button" class="nav next" id="next">Start</button>
+</footer>
+
+<div id="menu" hidden>
+  <div class="sheet">
+    <button type="button" class="nav" id="menuClose">Close</button>
+    <div id="menuList"></div>
+  </div>
+</div>
+
+<script>
+const slides = [...document.querySelectorAll('.slide')];
+let current = 0, score = 0;
+const awarded = new Set();
+const player = new Audio();
+player.preload = 'none';
+let cueScope = null;
+let cues = [];
+let liveQuiz = null;
+let chip = null;
+let dword = null;
+
+const CUES = {
+  'audio/1_12.mp3': [[1.30,'book'],[3.45,'coloured pencil'],[6.70,'notebook'],[9.65,'pen'],[11.95,'pencil'],[14.45,'pencil case'],[17.55,'pencil sharpener'],[20.85,'rubber'],[23.20,'ruler'],[25.55,'sandwich'],[28.30,'scissors']],
+  'audio/1_13.mp3': [[1.40,'bin'],[3.70,'board'],[6.15,'chair'],[8.50,'clock'],[10.95,'desk']]
+};
+const BAG = ['book','coloured pencil','notebook','pen','pencil','pencil case','pencil sharpener','rubber','ruler','sandwich','scissors'];
+const NUMW = {a:1,an:1,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12};
+const SNAKE = 'bindeskchairboardclock';
+const SNAKE_WORDS = [{w:'bin',a:0,b:2},{w:'desk',a:3,b:6},{w:'chair',a:7,b:11},{w:'board',a:12,b:16},{w:'clock',a:17,b:21}];
+const foundWords = new Set(['bin']);
+let anchor = null;
+
+function go(n){
+  if(n<0 || n>=slides.length) return;
+  if(player.dataset.src) player.pause();
+  speechSynthesis.cancel();
+  liveQuiz = null;
+  document.querySelectorAll('.cover').forEach(el => el.classList.remove('cover'));
+  slides[current].classList.remove('active');
+  current = n;
+  slides[current].classList.add('active');
+  document.getElementById('here').textContent = slides[current].dataset.title || '';
+  document.getElementById('counter').textContent = `${current+1} / ${slides.length}`;
+  document.getElementById('progress').style.width = `${current/(slides.length-1)*100}%`;
+  document.getElementById('prev').disabled = current===0;
+  const next = document.getElementById('next');
+  next.disabled = current===slides.length-1;
+  next.textContent = current===0 ? 'Start' : 'Next';
+  if(slides[current].dataset.title==='Done') document.getElementById('finalScore').textContent = score;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function reward(id, points){
+  if(awarded.has(id)) return;
+  awarded.add(id);
+  score += points;
+  document.getElementById('score').textContent = score;
+}
+function showFb(id, ok, text){
+  const f = document.getElementById(id);
+  f.className = `feedback show ${ok?'ok':'no'}`;
+  f.textContent = text;
+}
+function norm(s){
+  return s.trim().toLowerCase().replace(/[’‘]/g,"'").replace(/[.!?,]+$/g,'').replace(/\s+/g,' ');
+}
+function parseNum(s){
+  if(!s) return null;
+  const nums = s.split(' ').map(t => t.replace(/[^a-z0-9]/g,'')).map(t => /^\d+$/.test(t) ? +t : NUMW[t]).filter(n => n);
+  return nums.length===1 ? nums[0] : null;
+}
+function say(text){
+  if(!player.paused) player.pause();
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-GB';
+  u.rate = 0.92;
+  const voices = speechSynthesis.getVoices();
+  const v = voices.find(x => x.lang==='en-GB') || voices.find(x => x.lang && x.lang.startsWith('en'));
+  if(v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+function fmt(t){
+  const m = Math.floor(t/60), s = Math.floor(t%60);
+  return `${m}:${String(s).padStart(2,'0')}`;
+}
+function syncListen(){
+  document.querySelectorAll('.listen').forEach(b => b.classList.toggle('on', player.dataset.src===b.dataset.src && !player.paused));
+  document.getElementById('npPause').textContent = player.paused ? 'Play' : 'Pause';
+}
+function playSrc(src, name, scope){
+  speechSynthesis.cancel();
+  if(player.dataset.src===src && !player.paused){ player.pause(); return; }
+  if(player.dataset.src!==src){
+    player.src = src;
+    player.dataset.src = src;
+  }
+  cueScope = scope;
+  cues = CUES[src] || [];
+  player.play().catch(()=>{});
+  document.getElementById('npName').textContent = name;
+  document.getElementById('nowplay').hidden = false;
+}
+player.addEventListener('timeupdate', () => {
+  const t = player.currentTime || 0;
+  const d = player.duration || 1;
+  document.getElementById('npBar').style.width = `${(t/d)*100}%`;
+  document.getElementById('npTime').textContent = fmt(t);
+  document.getElementById('npScrub').setAttribute('aria-valuenow', String(Math.round(t/d*100)));
+  if(!cueScope) return;
+  let w = '';
+  cues.forEach(([st, word]) => { if(t>=st) w = word; });
+  cueScope.querySelectorAll('[data-word]').forEach(el => el.classList.toggle('hot', !!w && el.dataset.word===w));
+});
+player.addEventListener('play', syncListen);
+player.addEventListener('pause', syncListen);
+player.addEventListener('ended', () => {
+  syncListen();
+  if(cueScope) cueScope.querySelectorAll('.hot').forEach(el => el.classList.remove('hot'));
+});
+
+function shuffle(list){
+  const a = [...list];
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function startQuiz(opts){
+  liveQuiz = {...opts, i:0, words:shuffle(opts.words)};
+  const root = document.querySelector(`[data-zone="${opts.zone}"]`);
+  root.classList.add('cover');
+  root.querySelectorAll('.hit').forEach(el => el.classList.remove('hit'));
+  askQuiz();
+}
+function askQuiz(){
+  const root = document.querySelector(`[data-zone="${liveQuiz.zone}"]`);
+  root.querySelector('.quiz-prompt').textContent = `${liveQuiz.i+1} / ${liveQuiz.words.length}`;
+  say(liveQuiz.phrase.replace('$', liveQuiz.words[liveQuiz.i]));
+}
+function tapWord(el){
+  const zone = el.closest('[data-zone]')?.dataset.zone;
+  const word = el.dataset.word;
+  if(liveQuiz && liveQuiz.zone===zone){
+    if(word===liveQuiz.words[liveQuiz.i]){
+      el.classList.add('hit');
+      liveQuiz.i++;
+      if(liveQuiz.i===liveQuiz.words.length){
+        const root = el.closest('[data-zone]');
+        root.classList.remove('cover');
+        root.querySelector('.quiz-prompt').textContent = 'You pointed to every one.';
+        reward(liveQuiz.reward, liveQuiz.points);
+        showFb(liveQuiz.fb, true, 'You pointed to every one.');
+        liveQuiz = null;
+      } else askQuiz();
+    } else {
+      el.classList.remove('miss');
+      void el.offsetWidth;
+      el.classList.add('miss');
+    }
+    return;
+  }
+  say(word);
+}
+
+function checkChoices(rootId, fbId, points){
+  const qs = [...document.querySelectorAll(`#${rootId} .q`)].filter(q => !q.classList.contains('example'));
+  let good = 0;
+  qs.forEach(q => {
+    const picked = q.querySelector('button.selected');
+    const ok = picked && picked.dataset.v===q.dataset.answer;
+    q.querySelectorAll('button').forEach(b => b.classList.remove('good','bad'));
+    if(ok){ good++; picked.classList.add('good'); q.classList.add('locked'); }
+    else if(picked) picked.classList.add('bad');
+  });
+  showFb(fbId, good===qs.length, good===qs.length ? `All ${qs.length} correct.` : `${good} of ${qs.length} correct. Try the red ones again.`);
+  if(good===qs.length) reward(rootId, points);
+}
+function checkText(rootId, fbId, points){
+  const ins = [...document.querySelectorAll(`#${rootId} input`)];
+  let good = 0;
+  ins.forEach(inp => {
+    const value = norm(inp.value);
+    const ok = value && value===inp.dataset.answer;
+    inp.classList.toggle('correct', !!ok);
+    inp.classList.toggle('wrong', !ok);
+    if(ok) good++;
+  });
+  showFb(fbId, good===ins.length, good===ins.length ? `All ${ins.length} correct.` : `${good} of ${ins.length} correct. Check the red boxes.`);
+  if(good===ins.length) reward(rootId, points);
+}
+function checkNum(rootId, fbId, points){
+  const ins = [...document.querySelectorAll(`#${rootId} input`)];
+  let good = 0;
+  ins.forEach(inp => {
+    const ok = parseNum(norm(inp.value))===+inp.dataset.num;
+    inp.classList.toggle('correct', ok);
+    inp.classList.toggle('wrong', !ok);
+    if(ok) good++;
+  });
+  showFb(fbId, good===ins.length, good===ins.length ? 'The numbers match the picture.' : `${good} of ${ins.length} correct. Count again.`);
+  if(good===ins.length) reward(rootId, points);
+}
+
+function renderSnake(){
+  const box = document.getElementById('snake');
+  box.innerHTML = '<span class="shead" aria-hidden="true"></span>';
+  [...SNAKE].forEach((ch, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'let';
+    b.textContent = ch;
+    const word = SNAKE_WORDS.find(w => i>=w.a && i<=w.b && foundWords.has(w.w));
+    if(word) b.classList.add('found');
+    if(anchor===i) b.classList.add('anchor');
+    b.addEventListener('click', () => pickLetter(i));
+    box.appendChild(b);
+  });
+  document.getElementById('snakeCount').textContent = `${foundWords.size} / 5`;
+}
+function pickLetter(i){
+  if(anchor===null){ anchor = i; renderSnake(); return; }
+  const a = Math.min(anchor, i), b = Math.max(anchor, i);
+  anchor = null;
+  const hit = SNAKE_WORDS.find(w => w.a===a && w.b===b);
+  if(hit){
+    foundWords.add(hit.w);
+    if(foundWords.size===5){
+      reward('snake', 10);
+      showFb('snakeFb', true, 'You found all five words.');
+    }
+  } else {
+    const box = document.getElementById('snake');
+    box.classList.remove('miss');
+    void box.offsetWidth;
+    box.classList.add('miss');
+  }
+  renderSnake();
+}
+
+function checkStory(){
+  const blanks = [...document.querySelectorAll('#storyQuiz .blank')];
+  let good = 0;
+  const total = blanks.length + document.querySelectorAll('#storyQuiz .q').length;
+  blanks.forEach(b => {
+    const ok = b.dataset.filled===b.dataset.answer;
+    b.classList.toggle('good', ok);
+    b.classList.toggle('bad', !ok);
+    if(ok) good++;
+  });
+  document.querySelectorAll('#storyQuiz .q').forEach(q => {
+    const picked = q.querySelector('button.selected');
+    const ok = picked && picked.dataset.v===q.dataset.answer;
+    q.querySelectorAll('button').forEach(btn => btn.classList.remove('good','bad'));
+    if(ok){ good++; picked.classList.add('good'); q.classList.add('locked'); }
+    else if(picked) picked.classList.add('bad');
+  });
+  showFb('storyFb', good===total, good===total ? 'You read the story carefully.' : `${good} of ${total} correct. Read the story again.`);
+  if(good===total) reward('story', 15);
+}
+
+document.body.addEventListener('click', e => {
+  const listen = e.target.closest('.listen');
+  if(listen){
+    playSrc(listen.dataset.src, listen.dataset.name, listen.closest('.slide'));
+    return;
+  }
+  const jump = e.target.closest('[data-jump]');
+  if(jump){ go(+jump.dataset.jump); return; }
+  const start = e.target.closest('[data-start]');
+  if(start){
+    const map = {
+      phonics:{zone:'phonics', words:['fly','flag','globe','glass'], phrase:'Point to the $.', reward:'point-b', points:10, fb:'pointFb'},
+      bag:{zone:'bag', words:BAG, phrase:'Point to the $.', reward:'bag-point', points:10, fb:'bagFb'},
+      room:{zone:'room', words:['board','clock','bin','desk','chair'], phrase:'Point to the $.', reward:'room-point', points:10, fb:'roomPointFb'}
+    };
+    startQuiz(map[start.dataset.start]);
+    return;
+  }
+  if(e.target.closest('[data-hear]')){
+    if(liveQuiz) say(liveQuiz.phrase.replace('$', liveQuiz.words[liveQuiz.i]));
+    return;
+  }
+  const check = e.target.closest('[data-check]');
+  if(check){
+    const {check:kind, root, fb, points} = check.dataset;
+    if(kind==='choices') checkChoices(root, fb, +points);
+    if(kind==='text') checkText(root, fb, +points);
+    if(kind==='num') checkNum(root, fb, +points);
+    return;
+  }
+  const choice = e.target.closest('.q button');
+  if(choice){
+    const q = choice.closest('.q');
+    if(q.classList.contains('locked') || q.classList.contains('example') || choice.disabled) return;
+    q.querySelectorAll('button').forEach(b => b.classList.remove('selected','bad','good'));
+    choice.classList.add('selected');
+    return;
+  }
+  const chipBtn = e.target.closest('.chip');
+  if(chipBtn){
+    if(chipBtn.classList.contains('used')) return;
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('armed'));
+    chipBtn.classList.add('armed');
+    chip = chipBtn;
+    return;
+  }
+  const blank = e.target.closest('.blank');
+  if(blank){
+    if(blank.dataset.filled){
+      const prev = document.querySelector(`#storyQuiz .chip[data-w="${blank.dataset.filled}"]`);
+      if(prev) prev.classList.remove('used');
+      blank.textContent = '';
+      delete blank.dataset.filled;
+      blank.classList.remove('filled','good','bad');
+    }
+    if(!chip) return;
+    blank.textContent = chip.textContent;
+    blank.dataset.filled = chip.dataset.w;
+    blank.classList.add('filled');
+    chip.classList.add('used');
+    chip.classList.remove('armed');
+    chip = null;
+    return;
+  }
+  const mini = e.target.closest('.sw,.nw');
+  if(mini){ say(mini.dataset.word || mini.textContent); return; }
+  const sayEl = e.target.closest('[data-say]');
+  if(sayEl){ say(sayEl.dataset.say); return; }
+  const panel = e.target.closest('.panel');
+  if(panel?.dataset.say && !e.target.closest('button')){ say(panel.dataset.say); return; }
+  const word = e.target.closest('[data-zone] [data-word]');
+  if(word){ tapWord(word); return; }
+  const dictBtn = e.target.closest('#dict button');
+  if(dictBtn && !dictBtn.classList.contains('locked')){
+    if(dictBtn.closest('.dwords')){
+      document.querySelectorAll('#dict .dwords button').forEach(b => b.classList.remove('picked'));
+      dictBtn.classList.add('picked');
+      dword = dictBtn;
+      return;
+    }
+    if(!dword) return;
+    if(dictBtn.dataset.w===dword.dataset.w){
+      dictBtn.classList.add('locked');
+      dword.classList.add('locked');
+      dword.classList.remove('picked');
+      dword = null;
+      const all = document.querySelectorAll('#dict .dwords button').length;
+      const done = document.querySelectorAll('#dict .dwords button.locked').length;
+      if(done===all){ reward('dict', 10); showFb('dictFb', true, 'You matched every word.'); }
+    } else {
+      const left = dword;
+      dictBtn.classList.add('miss');
+      left.classList.add('miss');
+      dword = null;
+      left.classList.remove('picked');
+      setTimeout(() => { dictBtn.classList.remove('miss'); left.classList.remove('miss'); }, 400);
+    }
+  }
+});
+
+document.getElementById('storyCheck').addEventListener('click', checkStory);
+document.getElementById('prev').addEventListener('click', () => go(current-1));
+document.getElementById('next').addEventListener('click', () => go(current+1));
+document.getElementById('npPause').addEventListener('click', () => {
+  if(!player.dataset.src) return;
+  if(player.paused) player.play(); else player.pause();
+});
+document.getElementById('npScrub').addEventListener('click', e => {
+  if(!player.duration) return;
+  const r = e.currentTarget.getBoundingClientRect();
+  player.currentTime = Math.max(0, Math.min(player.duration, (e.clientX-r.left)/r.width*player.duration));
+});
+document.getElementById('menuBtn').addEventListener('click', () => { document.getElementById('menu').hidden = false; });
+document.getElementById('menuClose').addEventListener('click', () => { document.getElementById('menu').hidden = true; });
+document.getElementById('menu').addEventListener('click', e => { if(e.target.id==='menu') document.getElementById('menu').hidden = true; });
+document.addEventListener('keydown', e => {
+  if(e.target.matches('input, textarea')) return;
+  if(e.key==='ArrowRight') go(current+1);
+  if(e.key==='ArrowLeft') go(current-1);
+  if(e.key==='Escape') document.getElementById('menu').hidden = true;
+});
+
+const menuList = document.getElementById('menuList');
+let group = '';
+slides.forEach((s, i) => {
+  if(!s.dataset.group) return;
+  if(s.dataset.group!==group){
+    group = s.dataset.group;
+    const h = document.createElement('h3');
+    h.textContent = group;
+    menuList.appendChild(h);
+  }
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'jump';
+  b.textContent = s.dataset.title;
+  b.addEventListener('click', () => { go(i); document.getElementById('menu').hidden = true; });
+  menuList.appendChild(b);
+});
+const means = document.getElementById('dmeans');
+shuffle([...means.children]).forEach(node => means.appendChild(node));
+renderSnake();
+speechSynthesis.getVoices();
+go(0);
+</script>
 </body>
 </html>
